@@ -1,0 +1,72 @@
+\documentclass[12pt,parskip=full,ngerman]{scrartcl}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[placement=top]{background}
+\usepackage{xcolor}
+\usepackage[a4paper,left=20mm,right=10mm,top=25mm,bottom=10mm,includeheadfoot]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage{tabularx}
+\usepackage{blindtext}
+\usepackage{paracol}
+\usepackage{lipsum}
+\usepackage{csquotes}
+\usepackage{enumitem}
+\usepackage{makecell}
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\usepackage{amsmath,amssymb}
+\usepackage{eforms}
+\usepackage{pdfpages}
+\usepackage{ifthen}
+\usepackage{ifluatex}
+%\ifluatex
+%	\usepackage{unicode-math}
+%	\setmainfont{Latin Modern Roman}
+%	\setsansfont{Latin Modern Sans}
+%	\setmonofont{Latin Modern Mono}
+%	\setmathfont{Latin Modern Math}
+%\else % pdflatex
+	\usepackage[utf8]{inputenc}
+	\usepackage[T1]{fontenc}
+	\usepackage{lmodern}
+%\fi
+
+\input{setup}
+
+% add generated settings from API input
+\input{generated/settings}
+
+\begin{document}
+	
+\ifthenelse{\boolean{includeFrontPage}}{
+	
+\thispagestyle{empty}
+
+% shift values taken from DPSG style guide, might not work perfectly for other logos
+\tikz [remember picture, overlay] %
+\node [shift={(\logoShiftX,\logoShiftY)}] at (current page.north east) %
+%\node [shift={(-0.6cm,-1.3cm)}] at (current page.north east) %
+[anchor=north east] %
+{\includegraphics[width=\logoWidth]{\logoFile}};
+
+
+\columnratio{0.73,0.02,0.25}
+\begin{paracol}{3}
+	\raggedright
+	\begin{nthcolumn}{0}
+		\input{generated/content}
+	\end{nthcolumn}
+	\begin{nthcolumn}{2}
+		\input{sidebar}
+	\end{nthcolumn}
+\end{paracol}
+\newpage
+}{}%endif
+
+\ifthenelse{\boolean{includeHolidayLawPage}}{\includepdf[pagecommand={\thispagestyle{empty}}]{content/jugendarbeitsfreistellungsgesetz.pdf}}{}
+
+\ifthenelse{\boolean{includeSignUp}}{
+\input{content/anmeldung}
+\input{content/fotoerklaerung}
+}{}%endif
+\end{document}

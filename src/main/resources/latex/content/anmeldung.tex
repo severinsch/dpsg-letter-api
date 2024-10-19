@@ -1,0 +1,92 @@
+% reset margins to reduce wasted space at the top of the page
+\newgeometry{a4paper,left=20mm,right=15mm,top=10mm,bottom=5mm,includeheadfoot}
+
+\pagestyle{fancy}
+\setcounter{page}{1}
+
+% for multicolumn in the "Lebensmittelunverträglichkeiten" row
+\newlength{\yhwidth}
+\newcommand{\yhmulticolumn}[4]{\multicolumn{#2}{#3}{\settowidth{\yhwidth}{#1}\hsize=\dimexpr\hsize+\yhwidth+2\tabcolsep+\arrayrulewidth\relax #4}}
+
+\section*{Anmeldung}
+\small
+\begin{Form}
+    %\newcommand{\arraystretch}{1.3}%
+    \begin{tabularx}{\linewidth}{lX}
+        Für die Aktion: & \textField{aktion}{\linewidth}{\h} \br
+        Zeitraum: & \textField{zeitraum}{\linewidth}{\h}
+    \end{tabularx}
+
+    \subsection*{Teilnehmer*in}
+    \begin{tabularx}{\linewidth}{lX}
+        *Name: & \textField{name}{\linewidth}{\h}\br
+        *Vorname: & \textField{surname}{\linewidth}{\h}\br
+        *Geburtsdatum: & \textField{birthdate}{\linewidth}{\h}\br
+        *Gruppe: & \textField{gruppe}{\linewidth}{\h}\br
+        *Gruppenleiter*in: & \textField{leitung}{\linewidth}{\h}\br
+        *Anschrift: & \textField{address}{\linewidth}{\h}
+
+    \end{tabularx}
+    \begin{tabularx}{\linewidth}{lll}
+        *Mein Kind ist:
+        & \mbox{\radioButton{swim}{15bp}{15bp}{}\quad Schwimmer*in\quad}
+        & \mbox{\radioButton{swim}{15bp}{15bp}{}\quad Nichtschwimmer*in}\br
+
+        *Ernährung:
+        & \mbox{\radioButton{essen}{15bp}{15bp}{}\quad Vegan\qquad}
+        & \mbox{\radioButton{essen}{15bp}{15bp}{}\quad Vegetarisch\qquad}
+        \mbox{\radioButton{essen}{15bp}{15bp}{}\quad Alles}\br
+
+        *Lebensmittelunverträglichkeit: & \yhmulticolumn{}{2}{X}{\textField{lebensmittel}{\linewidth}{\h}}
+    \end{tabularx}
+
+    \subsection*{Eltern}
+    \begin{tabularx}{\linewidth}{lX}
+        *Namen der Eltern: & \textField{eltern}{\linewidth}{\h}\br
+        *Anschrift d.E.\ während der Aktion: & \textField{addressParents}{\linewidth}{\h}\br
+        *Telefonnummer d.E.\ während der Aktion: & \textField{phone}{\linewidth}{\h}
+    \end{tabularx}
+
+    \subsection*{Versicherung / Medizinische Versorgung}
+    \begin{tabularx}{\linewidth}{lX}
+        *Krankenkasse:
+        & \mbox{\radioButton{kk}{15bp}{15bp}{}\quad Gesetzlich}\quad\mbox{\radioButton{kk}{15bp}{15bp}{}\quad Privat}\br
+
+        *Nummer der KK: & \textField{kkNumber}{\linewidth}{\h}\br
+        *Name der KK: & \textField{kkName}{\linewidth}{\h}\br
+        *Hausärzt*in: & \textField{doctor}{\linewidth}{\h}\br
+        *Impfung gegen FSME bis: & \textField{fsme}{\linewidth}{\h}\br
+        *Impfung gegen Tetanus am: & \textField{tetanus}{\linewidth}{\h}\br
+        Allergien / Krankheiten: & \textField{allergies}{\linewidth}{\h}\br
+        \makecell[l]{
+            Mein Kind muss folgende\\Medikamente regelmäßig einnehmen:
+        }& \textField{medikament}{\linewidth}{\h}
+    \end{tabularx}
+
+    \ifthenelse{\boolean{signUpIncludeAbroadClause}}{
+        \subsection*{Bei Fahrten ins Ausland}
+        \begin{tabularx}{\linewidth}{lX}
+            Mein Kind hat die Erlaubnis zum Grenzübertritt.\br
+            Personalausweis/Reisepass-nummer: & \textField{idNumber}{\linewidth}{\h}
+        \end{tabularx}
+    }{}%endif
+
+    \subsection*{Einverständniserklärung}
+    Wir erlauben in dringenden Fällen jeden unbedingt notwendigen ärztlichen Eingriff (z.B.\ Blinddarm).
+    Mit dieser Anmeldung stimme/n ich/wir der \enquote{Vereinbarung über die Nutzung von Fotografien und Filmen} zu.
+    (Seite 3)\\
+    Ich melde mich / mein Kind verbindlich zur Teilnahme an der oben genannten Aktion an.
+
+    \vspace*{1.5cm} % Adjust the vertical space as needed
+    \footnotesize
+    \begin{tabularx}{\linewidth}{p{7cm}X}
+        \noindent\hrulefill & \noindent\hrulefill                                            \\
+        Ort, Datum          & Unterschrift Teilnehmer*in (\textbf{ab 13 Jahre erforderlich}) \\
+        &                                                                \\
+        &                                                                \\
+        &                                                                \\
+        \noindent\hrulefill & \noindent\hrulefill                                            \\
+        Ort, Datum          & \makecell[l]{Unterschrift der Erziehungsberechtigten           \\\textbf{(Bei allen Minderjährigen unter 18 notwendig)}}
+    \end{tabularx}
+\end{Form} 
+\clearpage

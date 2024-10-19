@@ -1,0 +1,84 @@
+% first add the transparent lily to the background
+% angle and position are taken from the DPSG style guide. Exact size may not be perfect, but good enough
+% opacity should be 30% as per the style guide, but that is a little to dark (their examples also look lighter)
+\backgroundsetup{contents=\includegraphics{pictures/lilie_outline}, scale=0.35, opacity=0.27, angle=5, position={-3mm, 38mm}}
+\makeatletter
+
+% add the end page marker in the bottom right to the background
+\AddEverypageHook{% 
+	\SetBgContents{\tikz [remember picture, overlay]
+		\node [shift={(-11mm, 7mm)}] at (current page.south east) %
+		[anchor=south east] %
+		{\includegraphics{pictures/end}};
+	}
+	\SetBgPosition{current page.south east}
+	\SetBgHshift{0}
+	\SetBgVshift{0}  
+	\SetBgOpacity{1}
+	\SetBgAngle{0}
+	\SetBgScale{1}
+	\bg@material
+}
+
+% for formatting the entries in the sidebar
+\newcommand{\vorstand}[3]{%
+	\textbf{#1}\\
+	#2\\
+	#3\\
+	\vspace{5mm}
+}
+
+% styling options for the form fields
+\everyTextField{\BG{beaublue}\BC{gray}\textSize{14}}
+\everyRadioButton{\BG{beaublue}\BC{gray}\symbolchoice{check}}
+
+% shorthands to make form code more readable
+\newcommand{\br}{\\[16pt]}
+\newcommand{\h}{1.5\baselineskip}
+
+% set font
+\renewcommand*\familydefault{\sfdefault}
+
+\definecolor{beaublue}{rgb}{0.74, 0.83, 0.9} % form background
+\definecolor{dpsgbeige}{RGB}{199,189,173}
+\definecolor{dpsgblue}{RGB}{0,48,86}
+
+% colour the section headings in dpsgblue and add the red start marker to each \section heading
+\newsavebox\mybox
+\newsavebox\imagebox
+\addtokomafont{section}{%
+	\sbox{\mybox}{\thesection}
+	\sbox{\imagebox}{%
+		\includegraphics{pictures/start}
+	}
+	\hspace*{-\wd\mybox}
+	\hspace*{-\wd\imagebox}
+	\includegraphics[trim=0.7cm -0.5mm 0 0]{pictures/start}
+	\hspace{0.5em}
+	\color{dpsgblue}
+}
+\addtokomafont{subsection}{%
+	\color{dpsgblue}
+}
+\addtokomafont{subsubsection}{%
+	\color{dpsgblue}
+}
+\addtokomafont{paragraph}{%
+	\color{dpsgblue}
+}
+\addtokomafont{title}{%
+	\color{dpsgblue}
+}
+
+% add the pagenumber to the bottom left
+\hypersetup{
+	colorlinks=true, % Set this to false if you prefer default colored boxes around form fields
+	linkcolor=black,
+}
+\fancyfoot[L]{\small Page \thepage\ of \pageref{LastPage}}
+\cfoot{}
+\renewcommand{\headrulewidth}{0pt} 
+
+% used by pandoc
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}

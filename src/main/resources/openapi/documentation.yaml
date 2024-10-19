@@ -1,0 +1,143 @@
+openapi: "3.1.0"
+info:
+  title: "letter_api API"
+  description: "letter_api API"
+  version: "1.0.0"
+servers:
+  - url: "http://0.0.0.0:8080"
+paths:
+  /api/v1/letter:
+    post:
+      description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LetterConfigModel"
+        required: true
+      responses:
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "200":
+          description: "OK <br> A file response"
+          content:
+            application/*:
+              schema:
+                type: "object"
+                format: "binary"
+        "400":
+          description: "Bad Request <br> TODO how to catch and add info?"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+  /protected/route/basic:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+  /protected/route/form:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+components:
+  schemas:
+    Vorstand:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        role:
+          type: "string"
+          enum:
+          - "Vorstand"
+          - "Vorstaendin"
+          - "Kurat"
+          - "Kuratin"
+        email:
+          type: "string"
+      required:
+      - "name"
+      - "role"
+      - "email"
+    BankInformation:
+      type: "object"
+      properties:
+        orgName:
+          type: "string"
+        bankName:
+          type: "string"
+        iban:
+          type: "string"
+      required:
+      - "orgName"
+      - "bankName"
+      - "iban"
+    LetterConfigModel:
+      type: "object"
+      properties:
+        title:
+          type: "string"
+        content:
+          type: "string"
+        includeSignUp:
+          type: "boolean"
+        signUpIncludeAbroadClause:
+          type: "boolean"
+        includeFrontPage:
+          type: "boolean"
+        includeHolidayLawPage:
+          type: "boolean"
+        place:
+          type: "string"
+        address:
+          type: "string"
+        organizationName:
+          type: "string"
+        people:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Vorstand"
+        bankInformation:
+          $ref: "#/components/schemas/BankInformation"
+        date:
+          type: "string"
+          format: "date"
+        logo:
+          type: "string"
+          enum:
+          - "DPSG"
+          - "Langenbach"
+      required:
+      - "title"
+      - "content"
+      - "place"
+      - "address"
+      - "organizationName"
+      - "people"
+      - "bankInformation"
+      - "logo"
