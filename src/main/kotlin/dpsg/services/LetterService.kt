@@ -12,9 +12,6 @@ fun buildLetter(config: LetterConfigModel): String? {
     val contentFile = createContentFile(config)
     val settingsFile = createSettingsFile(config)
 
-    println("Content file:\n\n$contentFile\n\n")
-    println("Settings file:\n\n$settingsFile\n\n")
-
     // create build dir and copy latex files there
     val buildDir = File("build_latex")
     if (!buildDir.isDirectory) {
@@ -29,8 +26,8 @@ fun buildLetter(config: LetterConfigModel): String? {
     File(contentPath, "content.tex").writeText(contentFile)
     File(contentPath, "settings.tex").writeText(settingsFile)
 
-    // run pdflatex
-    val cmd = "pdflatex -output-directory=out main.tex"
+    // run latexmk, using latexmk instead of pdflatex to ensure multiple compilations if necessary (e.g. for first compile in empty dir)
+    val cmd = "latexmk -pdf -output-directory=out main.tex"
     val parts = cmd.split("\\s".toRegex())
     // use build_latex as working directory
     try {
@@ -45,15 +42,14 @@ fun buildLetter(config: LetterConfigModel): String? {
                 .start()
 
         val exitCode = process.waitFor()
-        println("PDF build done: $exitCode")
-        val output = process.inputStream.bufferedReader().readText()
+        //val output = process.inputStream.bufferedReader().readText()
         val error = process.errorStream.bufferedReader().readText()
 
         if (exitCode != 0) {
             println("Error: $error")
             return null
         } else {
-            println("Output: $output")
+            //println("Output: $output")
             return "build_latex/out/main.pdf"
         }
 
@@ -84,7 +80,7 @@ fun createContentFile(config: LetterConfigModel): String {
 fun convertMarkdownToLatex(content: String): String? {
     val cmd = "pandoc -f markdown -t latex"
     val parts = cmd.split("\\s".toRegex())
-    val currentDirectory: File = File(System.getProperty("user.dir"))
+    val currentDirectory = File(System.getProperty("user.dir"))
 
     try {
         val process =
