@@ -4,7 +4,7 @@ info:
   description: "letter_api API"
   version: "1.0.0"
 servers:
-  - url: "http://0.0.0.0:8080"
+- url: "http://letter.dpsg-langenbach.de"
 paths:
   /api/v1/letter:
     post:
