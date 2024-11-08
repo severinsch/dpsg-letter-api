@@ -13,9 +13,7 @@ fun Route.letter() {
     route("/letter") {
         post {
             try {
-                println("Received letter request")
                 val config = call.receive<LetterConfigModel>()
-                println("Received config: $config")
 
                 val filePath = buildLetter(config)
                 if (filePath == null) {

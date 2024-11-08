@@ -78,15 +78,16 @@ fun createContentFile(config: LetterConfigModel): String {
 }
 
 fun convertMarkdownToLatex(content: String): String? {
-    val cmd = "pandoc -f markdown -t latex"
+    val buildDir = File("pandoc_build")
+
+    val cmd = "pandoc --lua-filter=metadata_table.lua -f markdown -t latex"
     val parts = cmd.split("\\s".toRegex())
-    val currentDirectory = File(System.getProperty("user.dir"))
 
     try {
         val process =
             ProcessBuilder(*parts.toTypedArray())
                 .apply {
-                    directory(currentDirectory)
+                    directory(buildDir)
 
                     redirectOutput(ProcessBuilder.Redirect.PIPE)
                     redirectError(ProcessBuilder.Redirect.PIPE)
@@ -101,6 +102,7 @@ fun convertMarkdownToLatex(content: String): String? {
         val exitCode = process.waitFor()
 
         val output = process.inputStream.bufferedReader().readText()
+        println("Pandoc Output: $output")
         val error = process.errorStream.bufferedReader().readText()
 
         if (exitCode != 0) {

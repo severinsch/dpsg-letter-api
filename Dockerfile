@@ -23,7 +23,7 @@ EXPOSE 8080:8080
 
 # install JDK, pandoc and required latex packages
 RUN pacman -Syu --noconfirm && \
-    pacman -S --noconfirm jdk-openjdk pandoc texlive-basic texlive-latexextra texlive-binextra texlive-fontutils texlive-fontsrecommended texlive-langgerman base-devel git
+    pacman -S --noconfirm jdk-openjdk pandoc texlive-basic texlive-latexextra texlive-binextra texlive-fontutils texlive-fontsrecommended texlive-langgerman base-devel git yq
 
 # Create a non-root user, necessary for the AUR package
 RUN useradd -m builduser && echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
