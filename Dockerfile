@@ -46,6 +46,7 @@ RUN pacman -Rns --noconfirm base-devel git && \
 RUN mkdir -p /app/src/main/resources/latex
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/letter-api.jar
 COPY --from=build /home/gradle/src/src/main/resources/latex /app/src/main/resources/latex
+COPY --from=build /home/gradle/src/src/main/lua_filters/* /app/src/main/lua_filters/
 
 WORKDIR /app/
 ENTRYPOINT ["java","-jar","letter-api.jar"]
