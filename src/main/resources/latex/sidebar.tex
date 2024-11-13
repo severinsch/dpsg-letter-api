@@ -10,14 +10,31 @@
 \orgName\\
 \address\\
 %
+\ifdefined\website
+    \vspace{\heightof{X}}
+    \website\\
+\fi
 \vspace{5mm}
 %
 %
-\vorstand{\personOneName}{\personOneRole}{\personOneEmail}
-\vorstand{\personTwoName}{\personTwoRole}{\personTwoEmail}
+\@ifundefined{personOnePhone}{
+    \vorstand{\personOneName}{\personOneRole}{\personOneEmail}
+}{
+    % TODO maybe format + in phone number differently
+    \vorstand{\personOneName}{\personOneRole}{\personOneEmail}[\personOnePhone]
+}
+\@ifundefined{personTwoPhone}{
+    \vorstand{\personTwoName}{\personTwoRole}{\personTwoEmail}
+}{
+    \vorstand{\personTwoName}{\personTwoRole}{\personTwoEmail}[\personTwoPhone]
+}
 % only add third person if it is defined
 \ifdefined\personThreeName
-    \vorstand{\personThreeName}{\personThreeRole}{\personThreeEmail}
+    \@ifundefined{personThreePhone}{
+        \vorstand{\personThreeName}{\personThreeRole}{\personThreeEmail}
+    }{
+        \vorstand{\personThreeName}{\personThreeRole}{\personThreeEmail}[\personThreePhone]
+    }
 \fi
 
 %

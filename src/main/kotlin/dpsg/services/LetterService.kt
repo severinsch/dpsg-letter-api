@@ -142,7 +142,9 @@ fun createSettingsFile(config: LetterConfigModel): String {
     val place = "\\newcommand{\\place}{${config.place}}"
     val address = "\\newcommand{\\address}{${config.address}}"
     val orgName = "\\newcommand{\\orgName}{${config.organizationName}}"
-    settingsFile += "$place\n$address\n$orgName\n"
+    // only set website if it is provided
+    val website = if (config.website != null) "\\newcommand{\\website}{${config.website}}\n" else ""
+    settingsFile += "$place\n$address\n$orgName\n$website"
 
 
     val indexToWord = mapOf(0 to "One", 1 to "Two", 2 to "Three")
@@ -158,7 +160,8 @@ fun createSettingsFile(config: LetterConfigModel): String {
         val name = "\\newcommand{\\person${indexToWord[index]}Name}{${person.name}}"
         val role = "\\newcommand{\\person${indexToWord[index]}Role}{${getRoleName(person.role)}}"
         val email = "\\newcommand{\\person${indexToWord[index]}Email}{${person.email}}"
-        settingsFile += "$name\n$role\n$email\n"
+        val phone = if (person.phone != null) "\\newcommand{\\person${indexToWord[index]}Phone}{${person.phone}}\n" else ""
+        settingsFile += "$name\n$role\n$email\n$phone"
     }
 
     val bankInfo = (

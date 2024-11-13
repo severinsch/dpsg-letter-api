@@ -6,6 +6,19 @@ info:
 servers:
 - url: "http://letter.dpsg-langenbach.de"
 paths:
+  /api/v1/health:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "OK"
   /api/v1/letter:
     post:
       description: ""
@@ -80,6 +93,8 @@ components:
           - "Kuratin"
         email:
           type: "string"
+        phone:
+          type: "string"
       required:
       - "name"
       - "role"
@@ -118,6 +133,8 @@ components:
           type: "string"
         organizationName:
           type: "string"
+        website:
+          type: "string"
         people:
           type: "array"
           items:
@@ -132,6 +149,7 @@ components:
           enum:
           - "DPSG"
           - "Langenbach"
+          - "Moosburg"
       required:
       - "title"
       - "content"
@@ -140,4 +158,5 @@ components:
       - "organizationName"
       - "people"
       - "bankInformation"
+      - "date"
       - "logo"

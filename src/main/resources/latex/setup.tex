@@ -21,10 +21,11 @@
 }
 
 % for formatting the entries in the sidebar
-\newcommand{\vorstand}[3]{%
+\NewDocumentCommand{\vorstand}{mmmO{}}{%
 	\textbf{#1}\\
 	#2\\
 	#3\\
+	\IfNoValueTF{#4}{}{#4\\}
 	\vspace{5mm}
 }
 

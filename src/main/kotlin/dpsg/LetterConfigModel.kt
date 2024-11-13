@@ -15,13 +15,15 @@ enum class Role {
 enum class Logo {
     DPSG,
     Langenbach,
+    Moosburg,
 }
 
 @Serializable
 data class Vorstand(
     val name: String,
     val role: Role,
-    val email: String
+    val email: String,
+    val phone: String? = null
 )
 
 @Serializable
@@ -43,9 +45,10 @@ data class LetterConfigModel(
     val place: String,
     val address: String,
     val organizationName: String,
+    val website: String? = null,
     val people: List<Vorstand>,
     val bankInformation: BankInformation,
     @Serializable(with = LocalDateSerializer::class)
-    val date: LocalDate? = LocalDate.now(),
+    val date: LocalDate = LocalDate.now(),
     val logo: Logo = Logo.Langenbach
 )
