@@ -21,11 +21,13 @@
 }
 
 % for formatting the entries in the sidebar
-\NewDocumentCommand{\vorstand}{mmmO{}}{%
+% o returns special NoValue if the optional value (phone) is note set
+% IfNoValueF is used to check if the optional has is the NoValue and only adds phone number if the check is false (i.e. the phone number is set)
+\NewDocumentCommand{\vorstand}{mmmo}{%
 	\textbf{#1}\\
 	#2\\
 	#3\\
-	\IfNoValueTF{#4}{}{#4\\}
+	\IfNoValueF{#4}{#4\\}
 	\vspace{5mm}
 }
 
