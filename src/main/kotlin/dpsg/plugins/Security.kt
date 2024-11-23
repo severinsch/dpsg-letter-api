@@ -5,9 +5,13 @@ import io.ktor.server.auth.*
 import io.ktor.server.plugins.hsts.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.plugins.httpsredirect.*
+import io.ktor.server.plugins.forwardedheaders.*
 
 fun Application.configureSecurity() {
     install(HSTS)
+    install(XForwardedHeaders)
+    install(HttpsRedirect)
 
     authentication {
         basic(name = "myauth1") {

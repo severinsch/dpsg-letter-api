@@ -34,6 +34,8 @@ dependencies {
     implementation("io.ktor:ktor-server-cors")
     implementation("io.ktor:ktor-server-openapi")
     implementation("io.ktor:ktor-server-hsts")
+    implementation("io.ktor:ktor-server-forwarded-header")
+    implementation("io.ktor:ktor-server-http-redirect")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
