@@ -697,6 +697,13 @@
     "iban" : { }
   }
 };
+            defs["Credentials"] = {
+  "required" : [ "password", "username" ],
+  "properties" : {
+    "username" : { },
+    "password" : { }
+  }
+};
             defs["LetterConfigModel"] = {
   "required" : [ "address", "bankInformation", "content", "date", "logo", "organizationName", "people", "place", "title" ],
   "properties" : {
@@ -723,6 +730,27 @@
     },
     "logo" : {
       "enum" : [ "DPSG", "Langenbach", "Moosburg" ]
+    }
+  }
+};
+            defs["Map"] = {
+  "properties" : { }
+};
+            defs["Map_String"] = { };
+            defs["OrganizationTemplate"] = {
+  "required" : [ "address", "bankInformation", "organizationName", "people", "place" ],
+  "properties" : {
+    "place" : { },
+    "address" : { },
+    "organizationName" : { },
+    "website" : { },
+    "people" : {
+      "items" : {
+        "$ref" : "#/components/schemas/Vorstand"
+      }
+    },
+    "bankInformation" : {
+      "$ref" : "#/components/schemas/BankInformation"
     }
   }
 };
@@ -760,11 +788,11 @@
                     <li data-group="Default" data-name="apiV1LetterPost" class="">
                       <a href="#api-Default-apiV1LetterPost">apiV1LetterPost</a>
                     </li>
-                    <li data-group="Default" data-name="protectedRouteBasicGet" class="">
-                      <a href="#api-Default-protectedRouteBasicGet">protectedRouteBasicGet</a>
+                    <li data-group="Default" data-name="apiV1TemplateGet" class="">
+                      <a href="#api-Default-apiV1TemplateGet">apiV1TemplateGet</a>
                     </li>
-                    <li data-group="Default" data-name="protectedRouteFormGet" class="">
-                      <a href="#api-Default-protectedRouteFormGet">protectedRouteFormGet</a>
+                    <li data-group="Default" data-name="loginPost" class="">
+                      <a href="#api-Default-loginPost">loginPost</a>
                     </li>
           </ul>
         </nav>
@@ -821,7 +849,7 @@
                           <div class="tab-pane active" id="examples-Default-apiV1HealthGet-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: text/plain"\
-"http://letter.dpsg-langenbach.de/api/v1/health"</code></pre>
+"http://0.0.0.0:8080/api/v1/health"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-apiV1HealthGet-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -1073,7 +1101,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: */*,application/*"\
 -H "Content-Type: application/json"\
-"http://letter.dpsg-langenbach.de/api/v1/letter"</code></pre>
+"http://0.0.0.0:8080/api/v1/letter"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-apiV1LetterPost-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -1439,10 +1467,10 @@ except ApiException as e:
                         </article>
                       </div>
                       <hr>
-                    <div id="api-Default-protectedRouteBasicGet">
-                      <article id="api-Default-protectedRouteBasicGet-0" data-group="User" data-name="protectedRouteBasicGet" data-version="0">
+                    <div id="api-Default-apiV1TemplateGet">
+                      <article id="api-Default-apiV1TemplateGet-0" data-group="User" data-name="apiV1TemplateGet" data-version="0">
                         <div class="pull-left">
-                          <h1>protectedRouteBasicGet</h1>
+                          <h1>apiV1TemplateGet</h1>
                           <p></p>
                         </div>
                         <div class="pull-right"></div>
@@ -1451,31 +1479,31 @@ except ApiException as e:
                         <p class="marked"></p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/protected/route/basic</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/api/v1/template</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
                         <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Default-protectedRouteBasicGet-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Default-protectedRouteBasicGet-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Default-protectedRouteBasicGet-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Default-protectedRouteBasicGet-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Default-protectedRouteBasicGet-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Default-protectedRouteBasicGet-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Default-protectedRouteBasicGet-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Default-protectedRouteBasicGet-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Default-protectedRouteBasicGet-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Default-protectedRouteBasicGet-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Default-protectedRouteBasicGet-0-python">Python</a></li>
+                          <li class="active"><a href="#examples-Default-apiV1TemplateGet-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Default-apiV1TemplateGet-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Default-apiV1TemplateGet-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Default-apiV1TemplateGet-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Default-apiV1TemplateGet-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Default-apiV1TemplateGet-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Default-apiV1TemplateGet-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Default-apiV1TemplateGet-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Default-apiV1TemplateGet-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Default-apiV1TemplateGet-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Default-apiV1TemplateGet-0-python">Python</a></li>
                         </ul>
 
                         <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Default-protectedRouteBasicGet-0-curl">
+                          <div class="tab-pane active" id="examples-Default-apiV1TemplateGet-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
--H "Accept: text/plain"\
-"http://letter.dpsg-langenbach.de/protected/route/basic"</code></pre>
+-H "Accept: */*"\
+"http://0.0.0.0:8080/api/v1/template"</code></pre>
                           </div>
-                          <div class="tab-pane" id="examples-Default-protectedRouteBasicGet-0-java">
+                          <div class="tab-pane" id="examples-Default-apiV1TemplateGet-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
 import io.swagger.client.auth.*;
 import io.swagger.client.model.*;
@@ -1490,16 +1518,16 @@ public class DefaultApiExample {
         
         DefaultApi apiInstance = new DefaultApi();
         try {
-            apiInstance.protectedRouteBasicGet();
+            apiInstance.apiV1TemplateGet();
         } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#protectedRouteBasicGet");
+            System.err.println("Exception when calling DefaultApi#apiV1TemplateGet");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
 
-                          <div class="tab-pane" id="examples-Default-protectedRouteBasicGet-0-android">
+                          <div class="tab-pane" id="examples-Default-apiV1TemplateGet-0-android">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.DefaultApi;
 
 public class DefaultApiExample {
@@ -1507,23 +1535,23 @@ public class DefaultApiExample {
     public static void main(String[] args) {
         DefaultApi apiInstance = new DefaultApi();
         try {
-            apiInstance.protectedRouteBasicGet();
+            apiInstance.apiV1TemplateGet();
         } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#protectedRouteBasicGet");
+            System.err.println("Exception when calling DefaultApi#apiV1TemplateGet");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
   <!--
-  <div class="tab-pane" id="examples-Default-protectedRouteBasicGet-0-groovy">
+  <div class="tab-pane" id="examples-Default-apiV1TemplateGet-0-groovy">
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
-                            <div class="tab-pane" id="examples-Default-protectedRouteBasicGet-0-objc">
+                            <div class="tab-pane" id="examples-Default-apiV1TemplateGet-0-objc">
                               <pre class="prettyprint"><code class="language-cpp">
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
-[apiInstance protectedRouteBasicGetWithCompletionHandler: 
+[apiInstance apiV1TemplateGetWithCompletionHandler: 
               ^(NSError* error) {
                             if (error) {
                                 NSLog(@"Error: %@", error);
@@ -1532,7 +1560,7 @@ DefaultApi *apiInstance = [[DefaultApi alloc] init];
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Default-protectedRouteBasicGet-0-javascript">
+                            <div class="tab-pane" id="examples-Default-apiV1TemplateGet-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var LetterApiApi = require('letter_api_api');
 
 var api = new LetterApiApi.DefaultApi()
@@ -1543,14 +1571,14 @@ var callback = function(error, data, response) {
     console.log('API called successfully.');
   }
 };
-api.protectedRouteBasicGet(callback);
+api.apiV1TemplateGet(callback);
 </code></pre>
                             </div>
 
-                            <!--<div class="tab-pane" id="examples-Default-protectedRouteBasicGet-0-angular">
+                            <!--<div class="tab-pane" id="examples-Default-apiV1TemplateGet-0-angular">
               <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
             </div>-->
-                            <div class="tab-pane" id="examples-Default-protectedRouteBasicGet-0-csharp">
+                            <div class="tab-pane" id="examples-Default-apiV1TemplateGet-0-csharp">
                               <pre class="prettyprint"><code class="language-cs">using System;
 using System.Diagnostics;
 using IO.Swagger.Api;
@@ -1559,7 +1587,7 @@ using IO.Swagger.Model;
 
 namespace Example
 {
-    public class protectedRouteBasicGetExample
+    public class apiV1TemplateGetExample
     {
         public void main()
         {
@@ -1568,11 +1596,11 @@ namespace Example
 
             try
             {
-                apiInstance.protectedRouteBasicGet();
+                apiInstance.apiV1TemplateGet();
             }
             catch (Exception e)
             {
-                Debug.Print("Exception when calling DefaultApi.protectedRouteBasicGet: " + e.Message );
+                Debug.Print("Exception when calling DefaultApi.apiV1TemplateGet: " + e.Message );
             }
         }
     }
@@ -1580,21 +1608,21 @@ namespace Example
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Default-protectedRouteBasicGet-0-php">
+                            <div class="tab-pane" id="examples-Default-apiV1TemplateGet-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new Swagger\Client\ApiDefaultApi();
 
 try {
-    $api_instance->protectedRouteBasicGet();
+    $api_instance->apiV1TemplateGet();
 } catch (Exception $e) {
-    echo 'Exception when calling DefaultApi->protectedRouteBasicGet: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling DefaultApi->apiV1TemplateGet: ', $e->getMessage(), PHP_EOL;
 }
 ?></code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Default-protectedRouteBasicGet-0-perl">
+                            <div class="tab-pane" id="examples-Default-apiV1TemplateGet-0-perl">
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::DefaultApi;
@@ -1602,14 +1630,14 @@ use WWW::SwaggerClient::DefaultApi;
 my $api_instance = WWW::SwaggerClient::DefaultApi->new();
 
 eval { 
-    $api_instance->protectedRouteBasicGet();
+    $api_instance->apiV1TemplateGet();
 };
 if ($@) {
-    warn "Exception when calling DefaultApi->protectedRouteBasicGet: $@\n";
+    warn "Exception when calling DefaultApi->apiV1TemplateGet: $@\n";
 }</code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Default-protectedRouteBasicGet-0-python">
+                            <div class="tab-pane" id="examples-Default-apiV1TemplateGet-0-python">
                               <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
 import time
 import swagger_client
@@ -1620,9 +1648,9 @@ from pprint import pprint
 api_instance = swagger_client.DefaultApi()
 
 try: 
-    api_instance.protected_route_basic_get()
+    api_instance.api_v1_template_get()
 except ApiException as e:
-    print("Exception when calling DefaultApi->protectedRouteBasicGet: %s\n" % e)</code></pre>
+    print("Exception when calling DefaultApi->apiV1TemplateGet: %s\n" % e)</code></pre>
                             </div>
                           </div>
 
@@ -1638,32 +1666,32 @@ except ApiException as e:
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                                 <li class="active">
-                                  <a data-toggle="tab" href="#responses-protectedRouteBasicGet-200-schema">Schema</a>
+                                  <a data-toggle="tab" href="#responses-apiV1TemplateGet-200-schema">Schema</a>
                                 </li>
 
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-protectedRouteBasicGet-200-schema">
-                                  <div id='responses-protectedRouteBasicGet-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                <div class="tab-pane active" id="responses-apiV1TemplateGet-200-schema">
+                                  <div id='responses-apiV1TemplateGet-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
                                     <script>
                                       $(document).ready(function() {
                                         var schemaWrapper = {
   "description" : "OK",
   "content" : {
-    "text/plain" : {
+    "*/*" : {
       "schema" : {
-        "x-content-type" : "text/plain"
+        "x-content-type" : "*/*"
       },
       "examples" : {
         "Example#1" : {
-          "value" : ""
+          "value" : "No User"
         }
       }
     }
   }
 };
-                                        var schema = schemaWrapper.content["text/plain"].schema;
+                                        var schema = schemaWrapper.content["*/*"].schema;
                                         if (schema.$ref != null) {
                                           schema = defsParser.$refs.get(schema.$ref);
                                         } else {
@@ -1676,24 +1704,72 @@ except ApiException as e:
 
                                         //console.log(JSON.stringify(schema));
                                         var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-protectedRouteBasicGet-200-schema-data').val(stringify(schema));
-                                        var result = $('#responses-protectedRouteBasicGet-200-schema-200');
+                                        $('#responses-apiV1TemplateGet-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-apiV1TemplateGet-200-schema-200');
                                         result.empty();
                                         result.append(view.render());
                                       });
                                     </script>
                                   </div>
-                                  <input id='responses-protectedRouteBasicGet-200-schema-data' type='hidden' value=''></input>
+                                  <input id='responses-apiV1TemplateGet-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 404 - Not Found </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-apiV1TemplateGet-404-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-apiV1TemplateGet-404-schema">
+                                  <div id='responses-apiV1TemplateGet-404-schema-404' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Not Found",
+  "content" : {
+    "*/*" : {
+      "schema" : {
+        "x-content-type" : "*/*"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["*/*"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-apiV1TemplateGet-404-schema-data').val(stringify(schema));
+                                        var result = $('#responses-apiV1TemplateGet-404-schema-404');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-apiV1TemplateGet-404-schema-data' type='hidden' value=''></input>
                                 </div>
                             </div>
 
                         </article>
                       </div>
                       <hr>
-                    <div id="api-Default-protectedRouteFormGet">
-                      <article id="api-Default-protectedRouteFormGet-0" data-group="User" data-name="protectedRouteFormGet" data-version="0">
+                    <div id="api-Default-loginPost">
+                      <article id="api-Default-loginPost-0" data-group="User" data-name="loginPost" data-version="0">
                         <div class="pull-left">
-                          <h1>protectedRouteFormGet</h1>
+                          <h1>loginPost</h1>
                           <p></p>
                         </div>
                         <div class="pull-right"></div>
@@ -1702,31 +1778,32 @@ except ApiException as e:
                         <p class="marked"></p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/protected/route/form</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/login</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
                         <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Default-protectedRouteFormGet-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Default-protectedRouteFormGet-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Default-protectedRouteFormGet-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Default-protectedRouteFormGet-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Default-protectedRouteFormGet-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Default-protectedRouteFormGet-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Default-protectedRouteFormGet-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Default-protectedRouteFormGet-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Default-protectedRouteFormGet-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Default-protectedRouteFormGet-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Default-protectedRouteFormGet-0-python">Python</a></li>
+                          <li class="active"><a href="#examples-Default-loginPost-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Default-loginPost-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Default-loginPost-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Default-loginPost-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Default-loginPost-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Default-loginPost-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Default-loginPost-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Default-loginPost-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Default-loginPost-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Default-loginPost-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Default-loginPost-0-python">Python</a></li>
                         </ul>
 
                         <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Default-protectedRouteFormGet-0-curl">
-                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
--H "Accept: text/plain"\
-"http://letter.dpsg-langenbach.de/protected/route/form"</code></pre>
+                          <div class="tab-pane active" id="examples-Default-loginPost-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+-H "Accept: */*"\
+-H "Content-Type: application/json"\
+"http://0.0.0.0:8080/login"</code></pre>
                           </div>
-                          <div class="tab-pane" id="examples-Default-protectedRouteFormGet-0-java">
+                          <div class="tab-pane" id="examples-Default-loginPost-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
 import io.swagger.client.auth.*;
 import io.swagger.client.model.*;
@@ -1740,42 +1817,50 @@ public class DefaultApiExample {
     public static void main(String[] args) {
         
         DefaultApi apiInstance = new DefaultApi();
+        Credentials body = ; // Credentials | 
         try {
-            apiInstance.protectedRouteFormGet();
+            Map_String result = apiInstance.loginPost(body);
+            System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#protectedRouteFormGet");
+            System.err.println("Exception when calling DefaultApi#loginPost");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
 
-                          <div class="tab-pane" id="examples-Default-protectedRouteFormGet-0-android">
+                          <div class="tab-pane" id="examples-Default-loginPost-0-android">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.DefaultApi;
 
 public class DefaultApiExample {
 
     public static void main(String[] args) {
         DefaultApi apiInstance = new DefaultApi();
+        Credentials body = ; // Credentials | 
         try {
-            apiInstance.protectedRouteFormGet();
+            Map_String result = apiInstance.loginPost(body);
+            System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#protectedRouteFormGet");
+            System.err.println("Exception when calling DefaultApi#loginPost");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
   <!--
-  <div class="tab-pane" id="examples-Default-protectedRouteFormGet-0-groovy">
+  <div class="tab-pane" id="examples-Default-loginPost-0-groovy">
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
-                            <div class="tab-pane" id="examples-Default-protectedRouteFormGet-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">
+                            <div class="tab-pane" id="examples-Default-loginPost-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Credentials *body = ; // 
+
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
-[apiInstance protectedRouteFormGetWithCompletionHandler: 
-              ^(NSError* error) {
+[apiInstance loginPostWith:body
+              completionHandler: ^(Map_String output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
                             if (error) {
                                 NSLog(@"Error: %@", error);
                             }
@@ -1783,25 +1868,27 @@ DefaultApi *apiInstance = [[DefaultApi alloc] init];
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Default-protectedRouteFormGet-0-javascript">
+                            <div class="tab-pane" id="examples-Default-loginPost-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var LetterApiApi = require('letter_api_api');
 
 var api = new LetterApiApi.DefaultApi()
+var body = ; // {{Credentials}} 
+
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
   } else {
-    console.log('API called successfully.');
+    console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.protectedRouteFormGet(callback);
+api.loginPost(body, callback);
 </code></pre>
                             </div>
 
-                            <!--<div class="tab-pane" id="examples-Default-protectedRouteFormGet-0-angular">
+                            <!--<div class="tab-pane" id="examples-Default-loginPost-0-angular">
               <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
             </div>-->
-                            <div class="tab-pane" id="examples-Default-protectedRouteFormGet-0-csharp">
+                            <div class="tab-pane" id="examples-Default-loginPost-0-csharp">
                               <pre class="prettyprint"><code class="language-cs">using System;
 using System.Diagnostics;
 using IO.Swagger.Api;
@@ -1810,20 +1897,22 @@ using IO.Swagger.Model;
 
 namespace Example
 {
-    public class protectedRouteFormGetExample
+    public class loginPostExample
     {
         public void main()
         {
 
             var apiInstance = new DefaultApi();
+            var body = new Credentials(); // Credentials | 
 
             try
             {
-                apiInstance.protectedRouteFormGet();
+                Map_String result = apiInstance.loginPost(body);
+                Debug.WriteLine(result);
             }
             catch (Exception e)
             {
-                Debug.Print("Exception when calling DefaultApi.protectedRouteFormGet: " + e.Message );
+                Debug.Print("Exception when calling DefaultApi.loginPost: " + e.Message );
             }
         }
     }
@@ -1831,36 +1920,40 @@ namespace Example
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Default-protectedRouteFormGet-0-php">
+                            <div class="tab-pane" id="examples-Default-loginPost-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new Swagger\Client\ApiDefaultApi();
+$body = ; // Credentials | 
 
 try {
-    $api_instance->protectedRouteFormGet();
+    $result = $api_instance->loginPost($body);
+    print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling DefaultApi->protectedRouteFormGet: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling DefaultApi->loginPost: ', $e->getMessage(), PHP_EOL;
 }
 ?></code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Default-protectedRouteFormGet-0-perl">
+                            <div class="tab-pane" id="examples-Default-loginPost-0-perl">
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::DefaultApi;
 
 my $api_instance = WWW::SwaggerClient::DefaultApi->new();
+my $body = WWW::SwaggerClient::Object::Credentials->new(); # Credentials | 
 
 eval { 
-    $api_instance->protectedRouteFormGet();
+    my $result = $api_instance->loginPost(body => $body);
+    print Dumper($result);
 };
 if ($@) {
-    warn "Exception when calling DefaultApi->protectedRouteFormGet: $@\n";
+    warn "Exception when calling DefaultApi->loginPost: $@\n";
 }</code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Default-protectedRouteFormGet-0-python">
+                            <div class="tab-pane" id="examples-Default-loginPost-0-python">
                               <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
 import time
 import swagger_client
@@ -1869,11 +1962,13 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = swagger_client.DefaultApi()
+body =  # Credentials | 
 
 try: 
-    api_instance.protected_route_form_get()
+    api_response = api_instance.login_post(body)
+    pprint(api_response)
 except ApiException as e:
-    print("Exception when calling DefaultApi->protectedRouteFormGet: %s\n" % e)</code></pre>
+    print("Exception when calling DefaultApi->loginPost: %s\n" % e)</code></pre>
                             </div>
                           </div>
 
@@ -1881,6 +1976,49 @@ except ApiException as e:
 
 
 
+                            <div class="methodsubtabletitle">Body parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">body <span style="color:red;">*</span></td>
+                                <td>
+                                
+                                
+                                <script>
+                                $(document).ready(function() {
+                                  var schemaWrapper = {
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/Credentials"
+      }
+    }
+  },
+  "required" : true
+};
+                                  var schema = schemaWrapper.content["application/json"].schema;
+                                  if (schema.$ref != null) {
+                                    schema = defsParser.$refs.get(schema.$ref);
+                                  } else {
+                                    schemaWrapper.components = {};
+                                    schemaWrapper.components.schemas = Object.assign({}, defs);
+                                    $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                      console.log(err);
+                                    });
+                                  }
+                                
+                                  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
+                                  var result = $('#d2e199_loginPost_body');
+                                  result.empty();
+                                  result.append(view.render());
+                                });
+                                </script>
+                                <div id="d2e199_loginPost_body"></div>
+                                </td>
+                                </tr>
+                            </table>
 
 
 
@@ -1889,32 +2027,27 @@ except ApiException as e:
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                                 <li class="active">
-                                  <a data-toggle="tab" href="#responses-protectedRouteFormGet-200-schema">Schema</a>
+                                  <a data-toggle="tab" href="#responses-loginPost-200-schema">Schema</a>
                                 </li>
 
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-protectedRouteFormGet-200-schema">
-                                  <div id='responses-protectedRouteFormGet-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                <div class="tab-pane active" id="responses-loginPost-200-schema">
+                                  <div id='responses-loginPost-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
                                     <script>
                                       $(document).ready(function() {
                                         var schemaWrapper = {
   "description" : "OK",
   "content" : {
-    "text/plain" : {
+    "*/*" : {
       "schema" : {
-        "x-content-type" : "text/plain"
-      },
-      "examples" : {
-        "Example#1" : {
-          "value" : ""
-        }
+        "$ref" : "#/components/schemas/Map_String"
       }
     }
   }
 };
-                                        var schema = schemaWrapper.content["text/plain"].schema;
+                                        var schema = schemaWrapper.content["*/*"].schema;
                                         if (schema.$ref != null) {
                                           schema = defsParser.$refs.get(schema.$ref);
                                         } else {
@@ -1927,14 +2060,62 @@ except ApiException as e:
 
                                         //console.log(JSON.stringify(schema));
                                         var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-protectedRouteFormGet-200-schema-data').val(stringify(schema));
-                                        var result = $('#responses-protectedRouteFormGet-200-schema-200');
+                                        $('#responses-loginPost-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-loginPost-200-schema-200');
                                         result.empty();
                                         result.append(view.render());
                                       });
                                     </script>
                                   </div>
-                                  <input id='responses-protectedRouteFormGet-200-schema-data' type='hidden' value=''></input>
+                                  <input id='responses-loginPost-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 401 - Unauthorized </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-loginPost-401-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-loginPost-401-schema">
+                                  <div id='responses-loginPost-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unauthorized",
+  "content" : {
+    "*/*" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/Map_String"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["*/*"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-loginPost-401-schema-data').val(stringify(schema));
+                                        var result = $('#responses-loginPost-401-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-loginPost-401-schema-data' type='hidden' value=''></input>
                                 </div>
                             </div>
 

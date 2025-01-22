@@ -1,6 +1,7 @@
 package dpsg
 
 import dpsg.plugins.*
+import dpsg.services.UserService
 
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -17,7 +18,10 @@ fun main() {
 fun Application.module() {
     install(Resources)
 
-    configureSecurity()
+    val userService = UserService()
+    userService.loadUsers()
+
+    configureSecurity(userService)
     configureSerialization()
-    configureRouting()
+    configureRouting(userService)
 }

@@ -36,7 +36,10 @@ dependencies {
     implementation("io.ktor:ktor-server-hsts")
     implementation("io.ktor:ktor-server-forwarded-header")
     implementation("io.ktor:ktor-server-http-redirect")
+    implementation("io.ktor:ktor-server-auth")
+    implementation("io.ktor:ktor-server-auth-jwt")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("org.mindrot:jbcrypt:0.4")
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }

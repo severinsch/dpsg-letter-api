@@ -1,6 +1,7 @@
 package dpsg.plugins
 
 import dpsg.routes.apiRoute
+import dpsg.services.UserService
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.cors.routing.*
@@ -8,7 +9,7 @@ import io.ktor.server.plugins.openapi.*
 import io.ktor.server.plugins.swagger.*
 import io.ktor.server.routing.*
 
-fun Application.configureRouting() {
+fun Application.configureRouting(userService: UserService) {
     install(CORS) {
         anyHost()
 
@@ -40,6 +41,6 @@ fun Application.configureRouting() {
     }
 
     routing {
-        apiRoute()
+        apiRoute(userService = userService)
     }
 }

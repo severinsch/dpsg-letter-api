@@ -52,3 +52,13 @@ data class LetterConfigModel(
     val date: LocalDate = LocalDate.now(),
     val logo: Logo = Logo.Langenbach
 )
+
+@Serializable
+data class OrganizationTemplate(
+    val place: String,
+    val address: String,
+    val organizationName: String,
+    val website: String? = null,
+    val people: List<Vorstand>,
+    val bankInformation: BankInformation,
+)
