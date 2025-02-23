@@ -66,9 +66,6 @@ fun validateConfig(config: LetterConfigModel) {
     if (config.people.size < 2) {
         throw IllegalStateException("There must be at least two people in the Vorstand")
     }
-    if (config.bankInformation.orgName.isBlank() || config.bankInformation.bankName.isBlank() || config.bankInformation.iban.isBlank()) {
-        throw IllegalStateException("Bank information must be provided")
-    }
 }
 
 fun createContentFile(config: LetterConfigModel): String {
@@ -134,7 +131,7 @@ fun createSettingsFile(config: LetterConfigModel): String {
 
     // set date
     val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-    val formattedDate = config.date?.format(formatter)
+    val formattedDate = config.date.format(formatter)
     val currentDateCommand = "\\newcommand{\\currentDate}{$formattedDate}"
     settingsFile += currentDateCommand + "\n"
 
@@ -164,11 +161,12 @@ fun createSettingsFile(config: LetterConfigModel): String {
         settingsFile += "$name\n$role\n$email\n$phone"
     }
 
-    val bankInfo = (
+    val bankInfo = if (config.bankInformation != null) (
             "\\newcommand{\\bankOrgName}{${config.bankInformation.orgName}}\n" +
             "\\newcommand{\\bankName}{${config.bankInformation.bankName}}\n" +
-            "\\newcommand{\\iban}{${config.bankInformation.iban}}")
-    settingsFile += bankInfo + "\n"
+            "\\newcommand{\\iban}{${config.bankInformation.iban}}\n"
+    ) else ""
+    settingsFile += bankInfo
 
     val logoSettings = LOGO_SETTINGS[config.logo] ?: throw IllegalStateException("Logo settings not found")
     val logoFile = "\\newcommand{\\logoFile}{${logoSettings.file}}"

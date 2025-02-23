@@ -47,7 +47,7 @@ data class LetterConfigModel(
     val organizationName: String,
     val website: String? = null,
     val people: List<Vorstand>,
-    val bankInformation: BankInformation,
+    val bankInformation: BankInformation? = null,
     @Serializable(with = LocalDateSerializer::class)
     val date: LocalDate = LocalDate.now(),
     val logo: Logo = Logo.Langenbach

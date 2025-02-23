@@ -38,9 +38,11 @@
 \fi
 
 %
-\vspace{10mm}
-\textbf{Kontoverbindung}\\
-\bankOrgName\\
-\bankName\\
-IBAN:\\
-\iban
+\ifdefined\bankOrgName
+    \vspace{10mm}
+    \textbf{Kontoverbindung}\\
+    \bankOrgName\\
+    \bankName\\
+    IBAN:\\
+    \iban
+\fi

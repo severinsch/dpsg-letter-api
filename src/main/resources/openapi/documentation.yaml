@@ -157,6 +157,5 @@ components:
       - "address"
       - "organizationName"
       - "people"
-      - "bankInformation"
       - "date"
       - "logo"
