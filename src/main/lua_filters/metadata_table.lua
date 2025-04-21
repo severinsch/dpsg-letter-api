@@ -37,13 +37,13 @@ function format_value_for_latex(value)
 end
 
 function insert_metadata_table(ordered_keys, metadata)
-    local tabular_str = "\\begin{tabular}{lp{\\linewidth}}\n"
+    local tabular_str = "\\begin{tabularx}{\\linewidth}{lX}\n"
     for _, key in ipairs(ordered_keys) do
         local value = metadata[key]
         local formatted_value = format_value_for_latex(value)
         tabular_str = tabular_str .. key .. ": &\\textbf{" .. formatted_value .. "}\\\\\n"
     end
-    tabular_str = tabular_str .. "\\end{tabular}"
+    tabular_str = tabular_str .. "\\end{tabularx}"
     return pandoc.RawBlock("latex", tabular_str)
 end
 
