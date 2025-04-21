@@ -37,7 +37,7 @@ function format_value_for_latex(value)
 end
 
 function insert_metadata_table(ordered_keys, metadata)
-    local tabular_str = "\\begin{tabular}{lp{\\columnwidth}}\n"
+    local tabular_str = "\\begin{tabular}{lp{\\linewidth}}\n"
     for _, key in ipairs(ordered_keys) do
         local value = metadata[key]
         local formatted_value = format_value_for_latex(value)
