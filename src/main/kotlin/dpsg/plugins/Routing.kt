@@ -1,6 +1,7 @@
 package dpsg.plugins
 
 import dpsg.routes.apiRoute
+import dpsg.routes.infoRoute
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.cors.routing.*
@@ -40,6 +41,11 @@ fun Application.configureRouting() {
     }
 
     routing {
-        apiRoute()
+        route("/api/v1"){
+            apiRoute()
+            route("/info") {
+                infoRoute()
+            }
+        }
     }
 }

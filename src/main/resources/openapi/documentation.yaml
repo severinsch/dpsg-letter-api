@@ -19,6 +19,52 @@ paths:
               examples:
                 Example#1:
                   value: "OK"
+  /api/v1/info/logo/{orgName}:
+    get:
+      description: ""
+      parameters:
+        - name: "orgName"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Missing organization name"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+                Example#2:
+                  value: ""
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+        "200":
+          description: "OK <br> A file response"
+          content:
+            application/*:
+              schema:
+                type: "object"
+                format: "binary"
   /api/v1/letter:
     post:
       description: ""
@@ -51,32 +97,6 @@ paths:
               examples:
                 Example#1:
                   value: ""
-  /protected/route/basic:
-    get:
-      description: ""
-      responses:
-        "200":
-          description: "OK"
-          content:
-            text/plain:
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
-  /protected/route/form:
-    get:
-      description: ""
-      responses:
-        "200":
-          description: "OK"
-          content:
-            text/plain:
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
 components:
   schemas:
     Vorstand:
@@ -87,18 +107,19 @@ components:
         role:
           type: "string"
           enum:
-          - "Vorstand"
-          - "Vorstaendin"
-          - "Kurat"
-          - "Kuratin"
+            - "Vorstand"
+            - "Vorstaendin"
+            - "Kurat"
+            - "Kuratin"
         email:
           type: "string"
         phone:
           type: "string"
+          nullable: true
       required:
-      - "name"
-      - "role"
-      - "email"
+        - "name"
+        - "role"
+        - "email"
     BankInformation:
       type: "object"
       properties:
@@ -109,9 +130,9 @@ components:
         iban:
           type: "string"
       required:
-      - "orgName"
-      - "bankName"
-      - "iban"
+        - "orgName"
+        - "bankName"
+        - "iban"
     LetterConfigModel:
       type: "object"
       properties:
@@ -135,11 +156,13 @@ components:
           type: "string"
         website:
           type: "string"
+          nullable: true
         people:
           type: "array"
           items:
             $ref: "#/components/schemas/Vorstand"
         bankInformation:
+          nullable: true
           $ref: "#/components/schemas/BankInformation"
         date:
           type: "string"
@@ -147,15 +170,19 @@ components:
         logo:
           type: "string"
           enum:
-          - "DPSG"
-          - "Langenbach"
-          - "Moosburg"
+            - "DPSG"
+            - "Langenbach"
+            - "Moosburg"
       required:
-      - "title"
-      - "content"
-      - "place"
-      - "address"
-      - "organizationName"
-      - "people"
-      - "date"
-      - "logo"
+        - "title"
+        - "content"
+        - "includeSignUp"
+        - "signUpIncludeAbroadClause"
+        - "includeFrontPage"
+        - "includeHolidayLawPage"
+        - "place"
+        - "address"
+        - "organizationName"
+        - "people"
+        - "date"
+        - "logo"

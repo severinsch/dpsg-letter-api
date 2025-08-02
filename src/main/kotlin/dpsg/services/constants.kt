@@ -13,7 +13,7 @@ data class LogoSettings(
 // gray border from generated logo removed using GIMP
 
 val LOGO_SETTINGS = mapOf(
-    Logo.DPSG to LogoSettings("pictures/logos/dpsg_logo", "5.2cm", "-0.6cm", "-1.3cm"),
-    Logo.Moosburg to LogoSettings("pictures/logos/moosburg_logo_fixed_border", "5.2cm", "-0.6cm", "-1.3cm"),
-    Logo.Langenbach to LogoSettings("pictures/logos/langenbach_logo_cropped", "4.6cm", "-0.5cm", "-0.5cm")
+    Logo.DPSG to LogoSettings("pictures/logos/dpsg_logo.jpg", "5.2cm", "-0.6cm", "-1.3cm"),
+    Logo.Moosburg to LogoSettings("pictures/logos/moosburg_logo_fixed_border.jpg", "5.2cm", "-0.6cm", "-1.3cm"),
+    Logo.Langenbach to LogoSettings("pictures/logos/langenbach_logo_cropped.jpg", "4.6cm", "-0.5cm", "-0.5cm")
 )

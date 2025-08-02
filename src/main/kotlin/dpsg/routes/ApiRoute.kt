@@ -9,11 +9,7 @@ fun Route.health() {
     }
 }
 
-fun Routing.apiRoute() {
-    route("/api/v1") {
+fun Route.apiRoute() {
         letter()
-    }
-    route("/api/v1") {
         health()
-    }
 }

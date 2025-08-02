@@ -20,6 +20,16 @@ fun buildLetter(config: LetterConfigModel): String? {
     val latexDir = File("src/main/resources/latex")
     latexDir.copyRecursively(buildDir, true)
 
+    // copy logo file
+    val logoSettings = LOGO_SETTINGS[config.logo] ?: throw IllegalStateException("Logo settings not found")
+    val resourceBasePath = System.getenv("RESOURCES_BASE_PATH") ?: "src/main/resources"
+    val logoFile = File(resourceBasePath, logoSettings.file)
+    if (!logoFile.exists()) {
+        throw IllegalStateException("Logo file not found: ${logoFile.absolutePath}")
+    }
+    val logoBuildPath = File(buildDir, "pictures/logos/${logoFile.name}")
+    logoFile.copyTo(logoBuildPath, overwrite = true)
+
     // add content and settings files
     val contentPath = File(buildDir, "generated")
     contentPath.mkdirs()
