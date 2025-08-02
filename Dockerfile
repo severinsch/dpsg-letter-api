@@ -43,11 +43,12 @@ USER root
 RUN pacman -Rns --noconfirm base-devel git && \
     rm -rf /var/cache/pacman/pkg/*
 
+# TODO: unsure whether this is actually visible from the kotlin code
 ENV RESOURCES_BASE_PATH="/app/resources"
 
-RUN mkdir -p /app/src/main/resources/
+RUN mkdir -p /app/resources/
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/letter-api.jar
-COPY --from=build /home/gradle/src/src/main/resources/latex $RESOURCES_BASE_PATH
+COPY --from=build /home/gradle/src/src/main/resources/ $RESOURCES_BASE_PATH
 COPY --from=build /home/gradle/src/src/main/lua_filters/* /app/lua_filters/
 
 WORKDIR /app/

@@ -16,7 +16,6 @@ fun Route.infoRoute() {
                 return@get
             }
             val orgName = call.parameters["orgName"]!!
-            println("Requested logo for organization: ${orgName.lowercase()}")
             val logo: Logo = when (orgName.lowercase()) {
                 "dpsg" -> Logo.DPSG
                 "langenbach" -> Logo.Langenbach
@@ -31,7 +30,7 @@ fun Route.infoRoute() {
                 call.respond(HttpStatusCode.InternalServerError, "Logo settings not found for organization: $orgName")
                 return@get
             }
-            val resourceBasePath = System.getenv("RESOURCES_BASE_PATH") ?: "src/main/resources"
+            val resourceBasePath = System.getenv("RESOURCES_BASE_PATH") ?: "/app/resources"
             val file = Path(resourceBasePath, settings.file)
             if (!file.exists()) {
                 call.respond(HttpStatusCode.NotFound, "Logo file not found for organization: $orgName")
