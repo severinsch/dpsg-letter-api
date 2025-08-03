@@ -45,6 +45,7 @@ RUN pacman -Rns --noconfirm base-devel git && \
 
 # TODO: unsure whether this is actually visible from the kotlin code
 ENV RESOURCES_BASE_PATH="/app/resources"
+ENV LUA_FILTERS_BASE_PATH="/app/lua_filters"
 
 RUN mkdir -p /app/resources/
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/letter-api.jar

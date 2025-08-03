@@ -100,7 +100,8 @@ fun createContentFile(config: LetterConfigModel): String {
 fun convertMarkdownToLatex(content: String): String? {
     val buildDir = File(System.getProperty("user.dir"))
 
-    val cmd = "pandoc --lua-filter=src/main/lua_filters/metadata_table.lua -f markdown+hard_line_breaks -t latex"
+    val luaFilterBasePath = System.getenv("LUA_FILTERS_BASE_PATH") ?: "/app/lua_filters"
+    val cmd = "pandoc --lua-filter=${luaFilterBasePath}/metadata_table.lua -f markdown+hard_line_breaks -t latex"
     val parts = cmd.split("\\s".toRegex())
 
     try {
