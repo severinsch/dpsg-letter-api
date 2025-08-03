@@ -38,7 +38,7 @@ fun buildLetter(config: LetterConfigModel): String? {
     File(contentPath, "settings.tex").writeText(settingsFile)
 
     // run latexmk, using latexmk instead of pdflatex to ensure multiple compilations if necessary (e.g. for first compile in empty dir)
-    val cmd = "latexmk -pdf -output-directory=out main.tex"
+    val cmd = "latexmk -no-shell-escape -pdf -output-directory=out main.tex"
     val parts = cmd.split("\\s".toRegex())
     // use build_latex as working directory
     try {
@@ -70,6 +70,19 @@ fun buildLetter(config: LetterConfigModel): String? {
     }
 }
 
+fun sanitizeForLatex(input: String): String {
+    // replace special characters with LaTeX-safe equivalents
+    return input
+        .replace("\\", "\\textbackslash ")  // order important here
+        .replace("{", "\\{")
+        .replace("}", "\\}")
+        .replace("&", "\\&")
+        .replace("%", "\\%")
+        .replace("$", "\\$")
+        .replace("^", "\\textasciicircum{}")
+        .replace("~", "\\textasciitilde{}")
+        .replace("_", "\\_")}
+
 fun validateConfig(config: LetterConfigModel) {
     if (config.title.isBlank() || config.content.isBlank() || config.place.isBlank() || config.address.isBlank() || config.organizationName.isBlank()) {
         throw IllegalStateException("All fields must be filled")
@@ -80,9 +93,8 @@ fun validateConfig(config: LetterConfigModel) {
 }
 
 fun createContentFile(config: LetterConfigModel): String {
-    var content = "\\section*{${config.title}}\n\n"
-    content += convertMarkdownToLatex(config.content) ?: return ""
-    return content
+    val content = "# ${config.title} {-}\n\n${config.content}"  // {-} removes section numbering
+    return convertMarkdownToLatex(content) ?: return ""
 }
 
 fun convertMarkdownToLatex(content: String): String? {
@@ -147,11 +159,11 @@ fun createSettingsFile(config: LetterConfigModel): String {
     settingsFile += currentDateCommand + "\n"
 
     // set sidebar information
-    val place = "\\newcommand{\\place}{${config.place}}"
-    val address = "\\newcommand{\\address}{${config.address}}"
-    val orgName = "\\newcommand{\\orgName}{${config.organizationName}}"
+    val place = "\\newcommand{\\place}{${sanitizeForLatex(config.place)}}"
+    val address = "\\newcommand{\\address}{${sanitizeForLatex(config.address)}}"
+    val orgName = "\\newcommand{\\orgName}{${sanitizeForLatex(config.organizationName)}}"
     // only set website if it is provided
-    val website = if (config.website != null) "\\newcommand{\\website}{${config.website}}\n" else ""
+    val website = if (config.website != null) "\\newcommand{\\website}{${sanitizeForLatex(config.website)}}\n" else ""
     settingsFile += "$place\n$address\n$orgName\n$website"
 
 
@@ -165,17 +177,17 @@ fun createSettingsFile(config: LetterConfigModel): String {
         }
     }
     for ((index, person) in config.people.withIndex()) {
-        val name = "\\newcommand{\\person${indexToWord[index]}Name}{${person.name}}"
+        val name = "\\newcommand{\\person${indexToWord[index]}Name}{${sanitizeForLatex(person.name)}}"
         val role = "\\newcommand{\\person${indexToWord[index]}Role}{${getRoleName(person.role)}}"
-        val email = "\\newcommand{\\person${indexToWord[index]}Email}{${person.email}}"
-        val phone = if (person.phone != null) "\\newcommand{\\person${indexToWord[index]}Phone}{${person.phone}}\n" else ""
+        val email = "\\newcommand{\\person${indexToWord[index]}Email}{${sanitizeForLatex(person.email)}}"
+        val phone = if (person.phone != null) "\\newcommand{\\person${indexToWord[index]}Phone}{${sanitizeForLatex(person.phone)}}\n" else ""
         settingsFile += "$name\n$role\n$email\n$phone"
     }
 
     val bankInfo = if (config.bankInformation != null) (
-            "\\newcommand{\\bankOrgName}{${config.bankInformation.orgName}}\n" +
-            "\\newcommand{\\bankName}{${config.bankInformation.bankName}}\n" +
-            "\\newcommand{\\iban}{${config.bankInformation.iban}}\n"
+            "\\newcommand{\\bankOrgName}{${sanitizeForLatex(config.bankInformation.orgName)}}\n" +
+            "\\newcommand{\\bankName}{${sanitizeForLatex(config.bankInformation.bankName)}}\n" +
+            "\\newcommand{\\iban}{${sanitizeForLatex(config.bankInformation.iban)}}\n"
     ) else ""
     settingsFile += bankInfo
 
