@@ -25,8 +25,8 @@
         *Gruppe: & \textField{gruppe}{\linewidth}{\h}\br
         *Gruppenleiter*in: & \textField{leitung}{\linewidth}{\h}\br
         *Anschrift: & \textField{address}{\linewidth}{\h}
-
     \end{tabularx}
+
     \begin{tabularx}{\linewidth}{lll}
         *Mein Kind ist:
         & \mbox{\radioButton{swim}{15bp}{15bp}{}\quad Schwimmer*in\quad}
@@ -66,18 +66,18 @@
     \ifthenelse{\boolean{signUpIncludeAbroadClause}}{
         \subsection*{Bei Fahrten ins Ausland}
         \begin{tabularx}{\linewidth}{lX}
-            Mein Kind hat die Erlaubnis zum Grenzübertritt.\br
-            Personalausweis/Reisepass-nummer: & \textField{idNumber}{\linewidth}{\h}
+            Personalausweis/Reisepass-nummer: & \textField{idNumber}{\linewidth}{\h}\\
+            Mein Kind hat die Erlaubnis zum Grenzübertritt.
         \end{tabularx}
     }{}%endif
 
     \subsection*{Einverständniserklärung}
-    Wir erlauben in dringenden Fällen jeden unbedingt notwendigen ärztlichen Eingriff (z.B.\ Blinddarm).
-    Mit dieser Anmeldung stimme/n ich/wir der \enquote{Vereinbarung über die Nutzung von Fotografien und Filmen} zu.
-    (Seite 3)\\
-    Ich melde mich / mein Kind verbindlich zur Teilnahme an der oben genannten Aktion an.
+    Hiermit melde ich mich / mein Kind verbindlich zur Teilnahme an der oben genannten Aktion an.\\
+    Wir erlauben in dringenden Fällen jeden unbedingt notwendigen ärztlichen Eingriff (z.B.\ Blinddarm).\\\\
+    Ich stimme der \enquote{Vereinbarung über die Nutzung von Fotografien und Filmen} (Seite 3) zu:\br
+    \hspace*{1cm}\mbox{\radioButton{kk}{15bp}{15bp}{}\quad Ja}\quad\mbox{\radioButton{kk}{15bp}{15bp}{}\quad Nein}\\
 
-    \vspace*{1.5cm} % Adjust the vertical space as needed
+    \vspace*{1cm}
     \footnotesize
     \begin{tabularx}{\linewidth}{p{7cm}X}
         \noindent\hrulefill & \noindent\hrulefill                                            \\
@@ -88,5 +88,5 @@
         \noindent\hrulefill & \noindent\hrulefill                                            \\
         Ort, Datum          & \makecell[l]{Unterschrift der Erziehungsberechtigten           \\\textbf{(Bei allen Minderjährigen unter 18 notwendig)}}
     \end{tabularx}
-\end{Form} 
+\end{Form}
 \clearpage
