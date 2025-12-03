@@ -1,9 +1,7 @@
-val kotlin_version: String by project
-val logback_version: String by project
 
 plugins {
-    kotlin("jvm") version "2.0.21"
-    id("io.ktor.plugin") version "3.0.0"
+    kotlin("jvm") version "2.2.21"
+    id("io.ktor.plugin") version "3.3.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
 }
 
@@ -25,7 +23,7 @@ dependencies {
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-auth-jvm")
     implementation("io.ktor:ktor-server-webjars-jvm")
-    implementation("org.webjars:jquery:3.2.1")
+    implementation("org.webjars:jquery:3.5.0")
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
@@ -36,7 +34,6 @@ dependencies {
     implementation("io.ktor:ktor-server-hsts")
     implementation("io.ktor:ktor-server-forwarded-header")
     implementation("io.ktor:ktor-server-http-redirect")
-    implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-test-host-jvm")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }
