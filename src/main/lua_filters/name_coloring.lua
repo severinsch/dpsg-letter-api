@@ -100,7 +100,7 @@ function Str(el)
 
         if id then
             -- 1. Generate color based on the ID (e.g. "Jonas_R")
-            local color_spec = generate_latex_highlight(id)
+            local color_spec = generate_latex_highlight(id:lower())
 
             -- 2. Create the display name by swapping Underscore for Space
             local display_name = id:gsub("_", " ")
