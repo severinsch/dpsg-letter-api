@@ -18,39 +18,74 @@ WORKDIR /home/gradle/src
 RUN gradle buildFatJar --no-daemon
 
 # Stage 3: Create the Runtime Image
-FROM archlinux:latest AS runtime
+FROM pandoc/latex:3.9-alpine AS runtime
+
 EXPOSE 8080:8080
 
-# install JDK, pandoc and required latex packages
-RUN pacman -Syu --noconfirm && \
-    pacman -S --noconfirm jdk-openjdk pandoc texlive-basic texlive-latexextra texlive-binextra texlive-fontutils texlive-fontsrecommended texlive-langgerman base-devel git yq
+RUN apk add --no-cache openjdk25-jre yq
 
-# Create a non-root user, necessary for the AUR package
-RUN useradd -m builduser && echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+# 1. Install standard LaTeX packages via tlmgr (removed ms)
+RUN tlmgr option docfiles 0 && \
+    tlmgr option srcfiles 0 && \
+    tlmgr install \
+    koma-script \
+    xkeyval \
+    everypage \
+    conv-xkv \
+    everyshi \
+    pdflscape \
+    graphics \
+    pgf \
+    background \
+    xcolor \
+    geometry \
+    babel \
+    babel-german \
+    tools \
+    blindtext \
+    paracol \
+    lipsum \
+    csquotes \
+    enumitem \
+    makecell \
+    lastpage \
+    fancyhdr \
+    amsmath \
+    amsfonts \
+    pdfpages \
+    iftex \
+    l3packages \
+    lm
 
-# Switch to the non-root user and build the package
-USER builduser
-WORKDIR /home/builduser
-RUN git clone https://aur.archlinux.org/texlive-acrotex.git && \
-    cd texlive-acrotex && \
-    makepkg -si --noconfirm
+# 2. Manually install AcroTeX from CTAN
+RUN apk add --no-cache wget unzip && \
+    mkdir -p /tmp/acrotex && cd /tmp/acrotex && \
+    wget https://mirrors.ctan.org/macros/latex/contrib/acrotex.zip && \
+    unzip acrotex.zip && \
+    cd acrotex && \
+    tex acrotex.ins && \
+    tex eforms.ins && \
+    tex dljslib.ins && \
+    tex insdljs.ins && \
+    tex taborder.ins && \
+    TEXMF_LOCAL=$(kpsewhich -var-value=TEXMFLOCAL) && \
+    mkdir -p $TEXMF_LOCAL/tex/latex/acrotex && \
+    cp -r * $TEXMF_LOCAL/tex/latex/acrotex/ && \
+    mktexlsr && \
+    rm -rf /tmp/acrotex
 
-# Clean up the build files and switch back to root
-RUN rm -rf /home/builduser/latex-acrotex
-USER root
-
-# clean up
-RUN pacman -Rns --noconfirm base-devel git && \
-    rm -rf /var/cache/pacman/pkg/*
-
-# TODO: unsure whether this is actually visible from the kotlin code
+# Define environment variables
 ENV RESOURCES_BASE_PATH="/app/resources"
 ENV LUA_FILTERS_BASE_PATH="/app/lua_filters"
 
-RUN mkdir -p /app/resources/
+# Set up directories
+RUN mkdir -p $RESOURCES_BASE_PATH $LUA_FILTERS_BASE_PATH
+
+# Copy artifacts from the build stage
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/letter-api.jar
 COPY --from=build /home/gradle/src/src/main/resources/ $RESOURCES_BASE_PATH
-COPY --from=build /home/gradle/src/src/main/lua_filters/* /app/lua_filters/
+COPY --from=build /home/gradle/src/src/main/lua_filters/ $LUA_FILTERS_BASE_PATH
 
 WORKDIR /app/
-ENTRYPOINT ["java","-jar","letter-api.jar"]
+
+ENTRYPOINT ["java", "-jar", "letter-api.jar"]
