@@ -22,44 +22,45 @@ FROM pandoc/latex:3.9-alpine AS runtime
 
 EXPOSE 8080:8080
 
-RUN apk add --no-cache openjdk25-jre yq
+RUN apk add --no-cache openjdk25-jre yq wget unzip
 
 # 1. Install standard LaTeX packages via tlmgr (removed ms)
 RUN tlmgr option docfiles 0 && \
     tlmgr option srcfiles 0 && \
     tlmgr install \
-    koma-script \
-    xkeyval \
-    everypage \
-    conv-xkv \
-    everyshi \
-    pdflscape \
-    graphics \
-    pgf \
-    background \
-    xcolor \
-    geometry \
-    babel \
-    babel-german \
-    tools \
-    blindtext \
-    paracol \
-    lipsum \
-    csquotes \
-    enumitem \
-    makecell \
-    lastpage \
-    fancyhdr \
-    amsmath \
-    amsfonts \
-    pdfpages \
-    iftex \
-    l3packages \
-    lm
+      #tools \
+      booktabs \
+      koma-script \
+      xkeyval \
+      everypage \
+      conv-xkv \
+      everyshi \
+      pdflscape \
+      graphics \
+      pgf \
+      background \
+      xcolor \
+      geometry \
+      babel \
+      babel-german \
+      tools \
+      blindtext \
+      paracol \
+      lipsum \
+      csquotes \
+      enumitem \
+      makecell \
+      lastpage \
+      fancyhdr \
+      amsmath \
+      amsfonts \
+      pdfpages \
+      iftex \
+      l3packages \
+      lm
 
 # 2. Manually install AcroTeX from CTAN
-RUN apk add --no-cache wget unzip && \
-    mkdir -p /tmp/acrotex && cd /tmp/acrotex && \
+RUN mkdir -p /tmp/acrotex && cd /tmp/acrotex && \
     wget https://mirrors.ctan.org/macros/latex/contrib/acrotex.zip && \
     unzip acrotex.zip && \
     cd acrotex && \
@@ -71,6 +72,13 @@ RUN apk add --no-cache wget unzip && \
     TEXMF_LOCAL=$(kpsewhich -var-value=TEXMFLOCAL) && \
     mkdir -p $TEXMF_LOCAL/tex/latex/acrotex && \
     cp -r * $TEXMF_LOCAL/tex/latex/acrotex/ && \
+    cd /tmp/acrotex && \
+    wget https://mirrors.ctan.org/macros/latex/contrib/acrotex-js.zip && \
+    unzip acrotex-js.zip && \
+    cd acrotex-js && \
+    tex acrotex-js.ins && \
+    mkdir -p $TEXMF_LOCAL/tex/latex/acrotex-js && \
+    cp -r * $TEXMF_LOCAL/tex/latex/acrotex-js/ && \
     mktexlsr && \
     rm -rf /tmp/acrotex
 
