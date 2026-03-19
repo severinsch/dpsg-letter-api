@@ -3,10 +3,14 @@ function parse_yaml_block(yaml_text)
     yaml_text = yaml_text:gsub("'", "'\"'\"'")
 
     -- Use `echo` to pipe `yaml_text` into `yq` for YAML-to-JSON conversion, rely ony yq to preserve order
-    local command = "echo '" .. yaml_text .. "' | yq"
+    local command = "echo '" .. yaml_text .. "' | yq -o=json 2>&1"
     local handle = io.popen(command)
     local json_text = handle:read("*a")
     handle:close()
+
+    if not json_text or json_text:match("^%s*$") then
+        error("Failed to parse YAML. Is 'yq' installed and returning valid JSON?")
+    end
 
     -- Extract keys in order from the JSON string, necessary as JSON decoding does not preserve order
     local ordered_keys = {}
