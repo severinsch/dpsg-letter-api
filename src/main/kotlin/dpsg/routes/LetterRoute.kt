@@ -15,12 +15,11 @@ fun Route.letter() {
             try {
                 val config = call.receive<LetterConfigModel>()
 
-                val filePath = buildLetter(config)
-                if (filePath == null) {
+                val file = buildLetter(config)
+                if (file == null) {
                     call.respond(HttpStatusCode.InternalServerError)
                     return@post
                 }
-                val file = File(filePath)
                 call.response.header(
                     HttpHeaders.ContentDisposition,
                     ContentDisposition.Attachment.withParameter(ContentDisposition.Parameters.FileName, "letter.pdf")

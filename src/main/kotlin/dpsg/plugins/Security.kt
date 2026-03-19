@@ -7,9 +7,9 @@ import io.ktor.server.plugins.httpsredirect.*
 import io.ktor.server.plugins.forwardedheaders.*
 
 fun Application.configureSecurity() {
-    install(HSTS)
-    install(XForwardedHeaders)
-    install(HttpsRedirect)
+    //install(HSTS)
+    //install(XForwardedHeaders)
+    //install(HttpsRedirect)
 
     authentication {
         basic(name = "myauth1") {

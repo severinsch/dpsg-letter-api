@@ -46,18 +46,30 @@
 \definecolor{dpsgbeige}{RGB}{199,189,173}
 \definecolor{dpsgblue}{RGB}{0,48,86}
 
-% colour the section headings in dpsgblue and add the red start marker to each \section heading
+% colour the section headings in dpsgblue and add the red start marker to each \lettertitle heading
 \newsavebox\mybox
 \newsavebox\imagebox
+
+\newcommand{\lettertitle}[1]{%
+	{%
+		\addtocounter{section}{1}%
+		\sbox{\mybox}{\thesection}%
+		\addtocounter{section}{-1}%
+
+		\addtokomafont{section}{%
+			\sbox{\imagebox}{%
+				\includegraphics{pictures/start}
+			}
+			\hspace*{-\wd\mybox}
+			\hspace*{-\wd\imagebox}
+			\includegraphics[trim=0.7cm -0.5mm 0 0]{pictures/start}
+			\hspace{0.35em}
+			\color{dpsgblue}
+		}%
+		\section*{#1}%
+	}%
+}
 \addtokomafont{section}{%
-	\sbox{\mybox}{\thesection}
-	\sbox{\imagebox}{%
-		\includegraphics{pictures/start}
-	}
-	\hspace*{-\wd\mybox}
-	\hspace*{-\wd\imagebox}
-	\includegraphics[trim=0.7cm -0.5mm 0 0]{pictures/start}
-	\hspace{0.5em}
 	\color{dpsgblue}
 }
 \addtokomafont{subsection}{%

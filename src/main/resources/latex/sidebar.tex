@@ -17,24 +17,30 @@
 \vspace{5mm}
 %
 %
+\makeatletter
 \@ifundefined{personOnePhone}{
     \vorstand{\personOneName}{\personOneRole}{\personOneEmail}
 }{
     % TODO maybe format + in phone number differently
     \vorstand{\personOneName}{\personOneRole}{\personOneEmail}[\personOnePhone]
 }
+\makeatother
+\makeatletter
 \@ifundefined{personTwoPhone}{
     \vorstand{\personTwoName}{\personTwoRole}{\personTwoEmail}
 }{
     \vorstand{\personTwoName}{\personTwoRole}{\personTwoEmail}[\personTwoPhone]
 }
+\makeatother
 % only add third person if it is defined
 \ifdefined\personThreeName
+    \makeatletter
     \@ifundefined{personThreePhone}{
         \vorstand{\personThreeName}{\personThreeRole}{\personThreeEmail}
     }{
         \vorstand{\personThreeName}{\personThreeRole}{\personThreeEmail}[\personThreePhone]
     }
+    \makeatother
 \fi
 
 %

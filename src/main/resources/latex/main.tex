@@ -10,7 +10,6 @@
 \usepackage{blindtext}
 \usepackage{paracol}
 \usepackage{lipsum}
-\usepackage{csquotes}
 \usepackage{enumitem}
 \usepackage{makecell}
 \usepackage{lastpage}
@@ -21,17 +20,71 @@
 \usepackage{ifthen}
 \usepackage{ifluatex}
 \usepackage{xparse}
-%\ifluatex
-%	\usepackage{unicode-math}
-%	\setmainfont{Latin Modern Roman}
-%	\setsansfont{Latin Modern Sans}
-%	\setmonofont{Latin Modern Mono}
-%	\setmathfont{Latin Modern Math}
-%\else % pdflatex
-	\usepackage[utf8]{inputenc}
-	\usepackage[T1]{fontenc}
-	\usepackage{lmodern}
-%\fi
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{csquotes}
+\usepackage{caption} % provides \captionof
+
+% copied from pandoc template
+% ==== START PANDOC TEMPLATE ====
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+\usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+\usepackage{unicode-math} % this also loads fontspec
+\defaultfontfeatures{Scale=MatchLowercase}
+\defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\ifPDFTeX\else
+% xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+	\usepackage[]{microtype}
+	\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+	\IfFileExists{parskip.sty}{%
+		\usepackage{parskip}
+	}{% else
+		\setlength{\parindent}{0pt}
+		\setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+	\KOMAoptions{parskip=half}}
+\makeatother
+%\usepackage{longtable,booktabs,array}
+\usepackage{booktabs,array} % SEV: removed longtable, since it does not work well with two column documents
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+%\makeatletter
+%\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+%\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+%\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+	\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+	hidelinks,
+	pdfcreator={LaTeX via pandoc}}
+% ==== END PANDOC TEMPLATE ====
+
+% ==== longtable fix ==== %
+% pandoc generates tables using longtable, which does not really work with two column documents
+% this command redefines longtable env
+% ==== end longtable fix ==== %
 
 \input{setup}
 

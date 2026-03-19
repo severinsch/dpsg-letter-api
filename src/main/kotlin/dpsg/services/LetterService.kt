@@ -6,7 +6,7 @@ import kotlinx.io.IOException
 import java.io.File
 import java.time.format.DateTimeFormatter
 
-fun buildLetter(config: LetterConfigModel): String? {
+fun buildLetter(config: LetterConfigModel): File? {
     validateConfig(config)
 
     val contentFile = createContentFile(config)
@@ -38,12 +38,12 @@ fun buildLetter(config: LetterConfigModel): String? {
     File(contentPath, "settings.tex").writeText(settingsFile)
 
     // run latexmk, using latexmk instead of pdflatex to ensure multiple compilations if necessary (e.g. for first compile in empty dir)
-    val cmd = "latexmk -no-shell-escape -pdf -output-directory=out main.tex"
-    val parts = cmd.split("\\s".toRegex())
+    // latexmk -no-shell-escape -pdf -output-directory=out -interaction=nonstopmode -halt-on-error -file-line-error main.tex
+    val cmd = arrayOf("latexmk", "-no-shell-escape", "-pdf", "-output-directory=out", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "main.tex")
     // use build_latex as working directory
     try {
         val process =
-            ProcessBuilder(*parts.toTypedArray())
+            ProcessBuilder(*cmd)
                 .apply {
                     directory(buildDir)
 
@@ -60,8 +60,7 @@ fun buildLetter(config: LetterConfigModel): String? {
             println("Error: $error")
             return null
         } else {
-            //println("Output: $output")
-            return "build_latex/out/main.pdf"
+            return File("build_latex/out/main.pdf")
         }
 
     } catch (e: IOException) {
@@ -93,15 +92,15 @@ fun validateConfig(config: LetterConfigModel) {
 }
 
 fun createContentFile(config: LetterConfigModel): String {
-    val content = "# ${config.title} {-}\n\n${config.content}"  // {-} removes section numbering
-    return convertMarkdownToLatex(content) ?: return ""
+    val tex = convertMarkdownToLatex(config.content) ?: return ""
+    return "\\lettertitle{${config.title}}\n\n$tex"
 }
 
 fun convertMarkdownToLatex(content: String): String? {
     val buildDir = File(System.getProperty("user.dir"))
 
     val luaFilterBasePath = System.getenv("LUA_FILTERS_BASE_PATH") ?: "/app/lua_filters"
-    val cmd = "pandoc -f markdown-citations --lua-filter=${luaFilterBasePath}/name_coloring.lua --lua-filter=${luaFilterBasePath}/metadata_table.lua -f markdown+hard_line_breaks -t latex"
+    val cmd = "pandoc --lua-filter=${luaFilterBasePath}/table_fix.lua --lua-filter=${luaFilterBasePath}/name_coloring.lua --lua-filter=${luaFilterBasePath}/metadata_table.lua -f markdown+hard_line_breaks+citations -t latex"
     val parts = cmd.split("\\s".toRegex())
 
     try {
