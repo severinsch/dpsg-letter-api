@@ -39,6 +39,7 @@ data class LetterConfigModel(
     val title: String,
     val content: String,
     val includeSignUp: Boolean,
+    val includeTableOfContents: Boolean,
     val signUpIncludeAbroadClause: Boolean,
     val includeFrontPage: Boolean,
     val includeHolidayLawPage: Boolean,

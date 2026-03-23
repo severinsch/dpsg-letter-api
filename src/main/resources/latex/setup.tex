@@ -97,3 +97,15 @@
 % used by pandoc
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\renewcaptionname{ngerman}{\contentsname}{Tagesordnung}
+\setcounter{tocdepth}{1}
+\cftpagenumbersoff{section}
+\renewcommand{\cfttoctitlefont}{%
+	\usekomafont{disposition}%
+	\usekomafont{section}%
+}
+\renewcommand{\cftaftertoctitle}{\par}
+\setlength{\cftsecindent}{1em}
+\setlength{\cftsecnumwidth}{2em}
+\setlength{\cftbeforesecskip}{0pt}

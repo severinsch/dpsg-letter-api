@@ -142,6 +142,8 @@ components:
           type: "string"
         includeSignUp:
           type: "boolean"
+        includeTableOfContents:
+          type: "boolean"
         signUpIncludeAbroadClause:
           type: "boolean"
         includeFrontPage:
@@ -177,6 +179,7 @@ components:
         - "title"
         - "content"
         - "includeSignUp"
+        - "includeTableOfContents"
         - "signUpIncludeAbroadClause"
         - "includeFrontPage"
         - "includeHolidayLawPage"
