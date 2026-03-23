@@ -28,7 +28,6 @@ RUN apk add --no-cache openjdk25-jre yq wget unzip
 RUN tlmgr option docfiles 0 && \
     tlmgr option srcfiles 0 && \
     tlmgr install \
-      #tools \
       booktabs \
       koma-script \
       xkeyval \
@@ -57,7 +56,8 @@ RUN tlmgr option docfiles 0 && \
       pdfpages \
       iftex \
       l3packages \
-      lm
+      lm \
+      tocloft
 
 # 2. Manually install AcroTeX from CTAN
 RUN mkdir -p /tmp/acrotex && cd /tmp/acrotex && \

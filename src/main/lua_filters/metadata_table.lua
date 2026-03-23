@@ -43,7 +43,11 @@ end
 function insert_metadata_table(ordered_keys, metadata)
     local tabular_str = "\\begin{tabularx}{\\linewidth}{lX}\n"
     for _, key in ipairs(ordered_keys) do
+        -- use empty string when key is missing
         local value = metadata[key]
+        if value == pandoc.json.null then
+            value = ""
+        end
         local formatted_value = format_value_for_latex(value)
         tabular_str = tabular_str .. key .. ": &\\textbf{" .. formatted_value .. "}\\\\\n"
     end

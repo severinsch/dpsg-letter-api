@@ -39,7 +39,16 @@ fun buildLetter(config: LetterConfigModel): File? {
 
     // run latexmk, using latexmk instead of pdflatex to ensure multiple compilations if necessary (e.g. for first compile in empty dir)
     // latexmk -no-shell-escape -pdf -output-directory=out -interaction=nonstopmode -halt-on-error -file-line-error main.tex
-    val cmd = arrayOf("latexmk", "-no-shell-escape", "-pdf", "-output-directory=out", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "main.tex")
+    val cmd = arrayOf(
+        "latexmk",
+        "-no-shell-escape",
+        "-pdf",
+        "-output-directory=out",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-file-line-error",
+        "main.tex"
+    )
     // use build_latex as working directory
     try {
         val process =
@@ -80,7 +89,8 @@ fun sanitizeForLatex(input: String): String {
         .replace("$", "\\$")
         .replace("^", "\\textasciicircum{}")
         .replace("~", "\\textasciitilde{}")
-        .replace("_", "\\_")}
+        .replace("_", "\\_")
+}
 
 fun validateConfig(config: LetterConfigModel) {
     if (config.title.isBlank() || config.content.isBlank() || config.place.isBlank() || config.address.isBlank() || config.organizationName.isBlank()) {
@@ -92,20 +102,38 @@ fun validateConfig(config: LetterConfigModel) {
 }
 
 fun createContentFile(config: LetterConfigModel): String {
-    val tex = convertMarkdownToLatex(config.content) ?: return ""
-    return "\\lettertitle{${config.title}}\n\n$tex"
+    val tocString = """
+        ```{=latex}
+        \tableofcontents
+        ```
+    """.trimIndent()
+    val content = if (config.includeTableOfContents) {
+        config.content.replace("[toc]", tocString).replace("[agenda]", tocString)
+    } else {
+        config.content
+    }
+
+    val tex = convertMarkdownToLatex(content) ?: return ""
+    return "\\lettertitle{${config.title}}\n\n${tex.replace("\"", "``")}"
 }
 
 fun convertMarkdownToLatex(content: String): String? {
     val buildDir = File(System.getProperty("user.dir"))
 
     val luaFilterBasePath = System.getenv("LUA_FILTERS_BASE_PATH") ?: "/app/lua_filters"
-    val cmd = "pandoc --lua-filter=${luaFilterBasePath}/table_fix.lua --lua-filter=${luaFilterBasePath}/name_coloring.lua --lua-filter=${luaFilterBasePath}/metadata_table.lua -f markdown+hard_line_breaks+citations -t latex"
-    val parts = cmd.split("\\s".toRegex())
+    val cmd = arrayOf(
+        "pandoc",
+        "--lua-filter=${luaFilterBasePath}/table_fix.lua",
+        "--lua-filter=${luaFilterBasePath}/name_coloring.lua",
+        "--lua-filter=${luaFilterBasePath}/metadata_table.lua",
+        "--wrap=preserve",
+        "-f", "markdown+lists_without_preceding_blankline+hard_line_breaks+citations",
+        "-t", "latex"
+    )
 
     try {
         val process =
-            ProcessBuilder(*parts.toTypedArray())
+            ProcessBuilder(*cmd)
                 .apply {
                     directory(buildDir)
 
