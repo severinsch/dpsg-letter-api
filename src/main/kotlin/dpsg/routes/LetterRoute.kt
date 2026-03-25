@@ -17,7 +17,7 @@ fun Route.letter() {
 
                 val file = buildLetter(config)
                 if (file == null) {
-                    call.respond(HttpStatusCode.InternalServerError)
+                    call.respond(HttpStatusCode.InternalServerError, "Error building letter")
                     return@post
                 }
                 call.response.header(
