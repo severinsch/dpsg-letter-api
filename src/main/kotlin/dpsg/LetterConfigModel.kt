@@ -16,6 +16,8 @@ enum class Logo {
     DPSG,
     Langenbach,
     Moosburg,
+    Freising,
+    BezirkFS
 }
 
 @Serializable

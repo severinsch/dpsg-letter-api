@@ -11,15 +11,17 @@ import kotlin.io.path.*
 fun Route.infoRoute() {
     route("/logo/{orgName}") {
         get {
-            if (call.parameters["orgName"] == null) {
+            val orgName = call.parameters["orgName"]
+            if (orgName == null) {
                 call.respond(HttpStatusCode.BadRequest, "Missing organization name")
                 return@get
             }
-            val orgName = call.parameters["orgName"]!!
             val logo: Logo = when (orgName.lowercase()) {
                 "dpsg" -> Logo.DPSG
                 "langenbach" -> Logo.Langenbach
                 "moosburg" -> Logo.Moosburg
+                "freising" -> Logo.Freising
+                "bezirkfs" -> Logo.BezirkFS
                 else -> {
                     call.respond(HttpStatusCode.NotFound, "Logo not found for organization: $orgName")
                     return@get

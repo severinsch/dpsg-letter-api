@@ -725,7 +725,7 @@
       "format" : "date"
     },
     "logo" : {
-      "enum" : [ "DPSG", "Langenbach", "Moosburg" ]
+      "enum" : [ "DPSG", "Langenbach", "Moosburg", "Freising", "BezirkFS" ]
     }
   }
 };
@@ -1752,6 +1752,11 @@ except ApiException as e:
     "*/*" : {
       "schema" : {
         "x-content-type" : "*/*"
+      },
+      "examples" : {
+        "Example#1" : {
+          "value" : "Error building letter"
+        }
       }
     }
   }

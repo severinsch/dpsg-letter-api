@@ -80,7 +80,10 @@ paths:
           content:
             '*/*':
               schema:
-                type: "object"
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Error building letter"
         "200":
           description: "OK <br> A file response"
           content:
@@ -175,6 +178,8 @@ components:
             - "DPSG"
             - "Langenbach"
             - "Moosburg"
+            - "Freising"
+            - "BezirkFS"
       required:
         - "title"
         - "content"
