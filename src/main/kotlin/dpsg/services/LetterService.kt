@@ -66,7 +66,7 @@ fun buildLetter(config: LetterConfigModel): File? {
         val error = process.errorStream.bufferedReader().readText()
 
         if (exitCode != 0) {
-            println("Error: $error")
+            println("Error when running latexmk: $error")
             return null
         } else {
             return File("build_latex/out/main.pdf")
@@ -114,7 +114,7 @@ fun createContentFile(config: LetterConfigModel): String {
     }
 
     val tex = convertMarkdownToLatex(content) ?: return ""
-    return "\\lettertitle{${config.title}}\n\n${tex.replace("\"", "``")}"
+    return "\\lettertitle{${sanitizeForLatex(config.title)}}\n\n${tex.replace("\"", "``")}"
 }
 
 fun convertMarkdownToLatex(content: String): String? {
