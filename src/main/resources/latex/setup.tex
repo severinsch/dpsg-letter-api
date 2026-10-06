@@ -26,7 +26,8 @@
 \NewDocumentCommand{\vorstand}{mmmo}{%
 	\textbf{#1}\\
 	#2\\
-	#3\\
+	% skip the email line if it is empty (an empty line would cause "There's no line here to end")
+	\expandafter\ifx\expandafter\relax#3\relax\else#3\\\fi
 	\IfNoValueF{#4}{#4\\}
 	\vspace{5mm}
 }

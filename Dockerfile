@@ -25,7 +25,9 @@ EXPOSE 8080:8080
 RUN apk add --no-cache openjdk25-jre yq wget unzip
 
 # 1. Install standard LaTeX packages via tlmgr (removed ms)
-RUN tlmgr option docfiles 0 && \
+# update tlmgr first, otherwise installs fail once the CTAN repository requires a newer tlmgr than the base image ships
+RUN tlmgr update --self && \
+    tlmgr option docfiles 0 && \
     tlmgr option srcfiles 0 && \
     tlmgr install \
       booktabs \
@@ -60,8 +62,10 @@ RUN tlmgr option docfiles 0 && \
       tocloft
 
 # 2. Manually install AcroTeX from CTAN
+# use a fixed mirror: mirrors.ctan.org redirects to random mirrors, some of which fail certificate verification
+ARG CTAN_MIRROR=https://ftp.fau.de/ctan
 RUN mkdir -p /tmp/acrotex && cd /tmp/acrotex && \
-    wget https://mirrors.ctan.org/macros/latex/contrib/acrotex.zip && \
+    wget $CTAN_MIRROR/macros/latex/contrib/acrotex.zip && \
     unzip acrotex.zip && \
     cd acrotex && \
     tex acrotex.ins && \
@@ -73,7 +77,7 @@ RUN mkdir -p /tmp/acrotex && cd /tmp/acrotex && \
     mkdir -p $TEXMF_LOCAL/tex/latex/acrotex && \
     cp -r * $TEXMF_LOCAL/tex/latex/acrotex/ && \
     cd /tmp/acrotex && \
-    wget https://mirrors.ctan.org/macros/latex/contrib/acrotex-js.zip && \
+    wget $CTAN_MIRROR/macros/latex/contrib/acrotex-js.zip && \
     unzip acrotex-js.zip && \
     cd acrotex-js && \
     tex acrotex-js.ins && \

@@ -730,13 +730,15 @@
   }
 };
             defs["Vorstand"] = {
-  "required" : [ "email", "name", "role" ],
+  "required" : [ "name", "role" ],
   "properties" : {
     "name" : { },
     "role" : {
       "enum" : [ "Vorstand", "Vorstaendin", "Kurat", "Kuratin" ]
     },
-    "email" : { },
+    "email" : {
+      "nullable" : true
+    },
     "phone" : {
       "nullable" : true
     }

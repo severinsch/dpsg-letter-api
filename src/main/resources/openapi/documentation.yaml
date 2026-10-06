@@ -116,13 +116,13 @@ components:
             - "Kuratin"
         email:
           type: "string"
+          nullable: true
         phone:
           type: "string"
           nullable: true
       required:
         - "name"
         - "role"
-        - "email"
     BankInformation:
       type: "object"
       properties:

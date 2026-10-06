@@ -1,0 +1,7 @@
+# local build output, the image builds its own (a stray jar in build/libs breaks the COPY in the runtime stage)
+.gradle
+build/
+build_latex/
+tmp/
+.git
+.idea

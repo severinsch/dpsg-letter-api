@@ -24,7 +24,7 @@ enum class Logo {
 data class Vorstand(
     val name: String,
     val role: Role,
-    val email: String,
+    val email: String? = null,
     val phone: String? = null
 )
 

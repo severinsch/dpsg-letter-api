@@ -207,7 +207,8 @@ fun createSettingsFile(config: LetterConfigModel): String {
     for ((index, person) in config.people.withIndex()) {
         val name = "\\newcommand{\\person${indexToWord[index]}Name}{${sanitizeForLatex(person.name)}}"
         val role = "\\newcommand{\\person${indexToWord[index]}Role}{${getRoleName(person.role)}}"
-        val email = "\\newcommand{\\person${indexToWord[index]}Email}{${sanitizeForLatex(person.email)}}"
+        // email is optional, an empty value is skipped in the sidebar
+        val email = "\\newcommand{\\person${indexToWord[index]}Email}{${sanitizeForLatex(person.email?.trim() ?: "")}}"
         val phone = if (person.phone != null) "\\newcommand{\\person${indexToWord[index]}Phone}{${sanitizeForLatex(person.phone)}}\n" else ""
         settingsFile += "$name\n$role\n$email\n$phone"
     }
