@@ -101,7 +101,11 @@
 
 \renewcaptionname{ngerman}{\contentsname}{Tagesordnung}
 \setcounter{tocdepth}{1}
-\cftpagenumbersoff{section}
+% hide page numbers in the ToC. Equivalent to \cftpagenumbersoff{section}, which breaks with tocloft v3.0c
+% ("You can't use `\relax' after \the" while reading the .toc file) because it calls a tagging socket without arguments
+\makeatletter
+\renewcommand{\cftsecfillnum}[1]{\cftparfillskip\cftsecafterpnum\cftsecpnumfinal\par}
+\makeatother
 \renewcommand{\cfttoctitlefont}{%
 	\usekomafont{disposition}%
 	\usekomafont{section}%
