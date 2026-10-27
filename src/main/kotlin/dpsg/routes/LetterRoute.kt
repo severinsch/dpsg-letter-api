@@ -16,8 +16,8 @@ fun Route.letter() {
             try {
                 val config = call.receive<LetterConfigModel>()
 
-                val file = withContext(Dispatchers.IO) { buildLetter(config) }
-                if (file == null) {
+                val pdf = withContext(Dispatchers.IO) { buildLetter(config) }
+                if (pdf == null) {
                     call.respond(HttpStatusCode.InternalServerError, "Error building letter")
                     return@post
                 }
@@ -26,7 +26,7 @@ fun Route.letter() {
                     ContentDisposition.Attachment.withParameter(ContentDisposition.Parameters.FileName, "letter.pdf")
                         .toString()
                 )
-                call.respondFile(file)
+                call.respondBytes(pdf, ContentType.Application.Pdf)
             } catch (ex: IllegalStateException) {
                 call.respond(HttpStatusCode.BadRequest, "Invalid config: ${ex.message}")
             } catch (ex: JsonConvertException) {

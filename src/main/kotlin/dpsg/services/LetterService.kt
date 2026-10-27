@@ -6,20 +6,27 @@ import kotlinx.io.IOException
 import java.io.File
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
+import kotlin.io.path.createTempDirectory
 
 const val LATEXMK_TIMEOUT_SECONDS = 50L
 
-fun buildLetter(config: LetterConfigModel): File? {
+fun buildLetter(config: LetterConfigModel): ByteArray? {
     validateConfig(config)
 
     val contentFile = createContentFile(config)
     val settingsFile = createSettingsFile(config)
 
-    // create build dir and copy latex files there
-    val buildDir = File("build_latex")
-    if (!buildDir.isDirectory) {
-        buildDir.mkdirs()
+    // create a separate build dir per request, so concurrent requests don't overwrite each other's files
+    val buildDir = createTempDirectory("letter").toFile()
+    try {
+        return compileLetter(config, buildDir, contentFile, settingsFile)
+    } finally {
+        buildDir.deleteRecursively()
     }
+}
+
+private fun compileLetter(config: LetterConfigModel, buildDir: File, contentFile: String, settingsFile: String): ByteArray? {
+    // copy latex files to build dir
     val resourceBasePath = System.getenv("RESOURCES_BASE_PATH") ?: "/app/resources"
 
     val latexDir = File(resourceBasePath, "/latex")
@@ -52,7 +59,7 @@ fun buildLetter(config: LetterConfigModel): File? {
         "-file-line-error",
         "main.tex"
     )
-    // use build_latex as working directory
+    // use build dir as working directory
     val latexmkLog = File(buildDir, "latexmk.log")
     try {
         val process =
@@ -75,7 +82,8 @@ fun buildLetter(config: LetterConfigModel): File? {
             println("Error when running latexmk: ${latexmkLog.readText().takeLast(5000)}")
             return null
         } else {
-            return File("build_latex/out/main.pdf")
+            // read pdf into memory, since the build dir is deleted afterwards
+            return File(buildDir, "out/main.pdf").readBytes()
         }
 
     } catch (e: IOException) {
