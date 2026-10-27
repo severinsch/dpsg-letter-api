@@ -7,7 +7,8 @@ import io.ktor.serialization.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import java.io.File
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 fun Route.letter() {
     route("/letter") {
@@ -15,7 +16,7 @@ fun Route.letter() {
             try {
                 val config = call.receive<LetterConfigModel>()
 
-                val file = buildLetter(config)
+                val file = withContext(Dispatchers.IO) { buildLetter(config) }
                 if (file == null) {
                     call.respond(HttpStatusCode.InternalServerError, "Error building letter")
                     return@post

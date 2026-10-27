@@ -5,6 +5,9 @@ import dpsg.Role
 import kotlinx.io.IOException
 import java.io.File
 import java.time.format.DateTimeFormatter
+import java.util.concurrent.TimeUnit
+
+const val LATEXMK_TIMEOUT_SECONDS = 50L
 
 fun buildLetter(config: LetterConfigModel): File? {
     validateConfig(config)
@@ -50,23 +53,26 @@ fun buildLetter(config: LetterConfigModel): File? {
         "main.tex"
     )
     // use build_latex as working directory
+    val latexmkLog = File(buildDir, "latexmk.log")
     try {
         val process =
             ProcessBuilder(*cmd)
                 .apply {
                     directory(buildDir)
 
-                    redirectOutput(ProcessBuilder.Redirect.PIPE)
-                    redirectError(ProcessBuilder.Redirect.PIPE)
+                    redirectErrorStream(true)
+                    redirectOutput(latexmkLog)
                 }
                 .start()
 
-        val exitCode = process.waitFor()
-        //val output = process.inputStream.bufferedReader().readText()
-        val error = process.errorStream.bufferedReader().readText()
+        if (!process.waitFor(LATEXMK_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
+            process.destroyForcibly()
+            println("latexmk timed out after $LATEXMK_TIMEOUT_SECONDS seconds")
+            return null
+        }
 
-        if (exitCode != 0) {
-            println("Error when running latexmk: $error")
+        if (process.exitValue() != 0) {
+            println("Error when running latexmk: ${latexmkLog.readText().takeLast(5000)}")
             return null
         } else {
             return File("build_latex/out/main.pdf")
@@ -131,6 +137,7 @@ fun convertMarkdownToLatex(content: String): String? {
         "-t", "latex"
     )
 
+    val errorFile = File.createTempFile("pandoc", ".err")
     try {
         val process =
             ProcessBuilder(*cmd)
@@ -138,7 +145,7 @@ fun convertMarkdownToLatex(content: String): String? {
                     directory(buildDir)
 
                     redirectOutput(ProcessBuilder.Redirect.PIPE)
-                    redirectError(ProcessBuilder.Redirect.PIPE)
+                    redirectError(errorFile)
                 }
                 .start()
 
@@ -147,10 +154,9 @@ fun convertMarkdownToLatex(content: String): String? {
             it.flush()
         }
 
-        val exitCode = process.waitFor()
-
         val output = process.inputStream.bufferedReader().readText()
-        val error = process.errorStream.bufferedReader().readText()
+        val exitCode = process.waitFor()
+        val error = errorFile.readText()
 
         if (exitCode != 0) {
             println("Error: $error")
@@ -160,6 +166,8 @@ fun convertMarkdownToLatex(content: String): String? {
 
     } catch (e: IOException) {
         e.printStackTrace()
+    } finally {
+        errorFile.delete()
     }
     return null
 }
